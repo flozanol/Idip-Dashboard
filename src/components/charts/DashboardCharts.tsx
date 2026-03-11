@@ -14,23 +14,14 @@ import {
   Pie,
 } from 'recharts';
 
-const funnelData = [
-  { name: 'Nuevo', value: 400, fill: '#3b82f6' },
-  { name: 'Contactado', value: 300, fill: '#6366f1' },
-  { name: 'Seguimiento', value: 200, fill: '#8b5cf6' },
-  { name: 'Venta', value: 100, fill: '#10b981' },
-];
+export function FunnelChart({ leads }: { leads: any[] }) {
+  const funnelData = [
+    { name: 'Nuevo', value: leads.filter(l => l.status === 'Nuevo').length, fill: '#3b82f6' },
+    { name: 'Contactado', value: leads.filter(l => l.status === 'Contactado').length, fill: '#6366f1' },
+    { name: 'Seguimiento', value: leads.filter(l => l.status === 'Seguimiento').length, fill: '#8b5cf6' },
+    { name: 'Venta', value: leads.filter(l => l.status === 'Venta').length, fill: '#10b981' },
+  ];
 
-const channelData = [
-  { name: 'Google', value: 40 },
-  { name: 'TikTok', value: 30 },
-  { name: 'Instagram', value: 20 },
-  { name: 'Facebook', value: 10 },
-];
-
-const COLORS = ['#e11d48', '#f43f5e', '#fb7185', '#fda4af'];
-
-export function FunnelChart() {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart
@@ -68,12 +59,21 @@ export function FunnelChart() {
   );
 }
 
-export function ChannelMixChart() {
+export function ChannelMixChart({ leads }: { leads: any[] }) {
+  const channels = ['Google', 'TikTok', 'Instagram', 'Facebook', 'YouTube', 'Alumnos', 'Exalumnos', 'Recomendados', 'Teléfono', 'Piso', 'WhatsApp'];
+  
+  const channelData = channels.map(channel => ({
+    name: channel,
+    value: leads.filter(l => l.canal_origen === channel).length
+  })).filter(d => d.value > 0);
+
+  const COLORS = ['#98C222', '#e11d48', '#3b82f6', '#6366f1', '#8b5cf6', '#f59e0b', '#ec4899', '#10b981', '#06b6d4', '#84cc16'];
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
         <Pie
-          data={channelData}
+          data={channelData.length > 0 ? channelData : [{ name: 'Sin datos', value: 1 }]}
           cx="50%"
           cy="50%"
           innerRadius={60}
@@ -81,9 +81,9 @@ export function ChannelMixChart() {
           paddingAngle={5}
           dataKey="value"
         >
-          {channelData.map((entry, index) => (
+          {channelData.length > 0 ? channelData.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
+          )) : <Cell key="empty" fill="#27272a" />}
         </Pie>
         <Tooltip 
           contentStyle={{ 
