@@ -53,6 +53,11 @@ export function LeadForm({ sedes, categorias, cursos, vendedores }: { sedes: any
                 </div>
 
                 <div className="col-span-1">
+                  <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Email</label>
+                  <input name="email" type="email" placeholder="Ej. ana@ejemplo.com" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
+                </div>
+
+                <div className="col-span-1">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Fecha de Registro</label>
                   <input required name="fecha" type="date" defaultValue={new Date().toISOString().split('T')[0]} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors [color-scheme:dark]" />
                 </div>

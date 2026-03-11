@@ -54,6 +54,7 @@ export async function initDb() {
       CREATE TABLE IF NOT EXISTS leads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre_prospecto TEXT NOT NULL,
+        email TEXT,
         telefono TEXT,
         sede_id INTEGER REFERENCES sedes(id),
         categoria_id INTEGER REFERENCES categorias(id),
@@ -68,6 +69,9 @@ export async function initDb() {
     `);
 
     // Add columns if they don't exist (Migration)
+    try {
+      await db.execute("ALTER TABLE leads ADD COLUMN email TEXT");
+    } catch (e) {}
     try {
       await db.execute("ALTER TABLE leads ADD COLUMN curso_id INTEGER REFERENCES cursos(id)");
     } catch (e) {}

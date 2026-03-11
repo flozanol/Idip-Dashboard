@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function createLead(formData: FormData) {
   const nombre = formData.get('nombre') as string;
+  const email = formData.get('email') as string;
   const telefono = formData.get('telefono') as string;
   const sedeId = parseInt(formData.get('sedeId') as string);
   const categoriaId = parseInt(formData.get('categoriaId') as string);
@@ -17,8 +18,8 @@ export async function createLead(formData: FormData) {
 
   try {
     await db.execute({
-      sql: "INSERT INTO leads (nombre_prospecto, telefono, sede_id, categoria_id, curso_id, vendedor_id, canal_origen, status, monto_cierre, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      args: [nombre, telefono, sedeId, categoriaId, cursoId, vendedorId, canal, status, montoCierre, fecha]
+      sql: "INSERT INTO leads (nombre_prospecto, email, telefono, sede_id, categoria_id, curso_id, vendedor_id, canal_origen, status, monto_cierre, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      args: [nombre, email, telefono, sedeId, categoriaId, cursoId, vendedorId, canal, status, montoCierre, fecha]
     });
     revalidatePath('/');
     revalidatePath('/leads');

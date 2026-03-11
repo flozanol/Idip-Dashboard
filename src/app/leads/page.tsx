@@ -59,7 +59,8 @@ export default async function LeadsPage() {
                         <tr key={lead.id} className="hover:bg-zinc-900/50 transition-colors group">
                           <td className="px-6 py-4">
                             <div className="font-semibold text-white">{String(lead.nombre_prospecto)}</div>
-                            <div className="text-zinc-500 text-xs">{String(lead.telefono || 'Sin teléfono')}</div>
+                            <div className="text-zinc-500 text-[10px] leading-tight mt-0.5">{String(lead.email || '')}</div>
+                            <div className="text-zinc-500 text-[10px]">{String(lead.telefono || 'Sin teléfono')}</div>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex flex-col gap-1">
