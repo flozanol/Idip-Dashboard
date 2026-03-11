@@ -12,6 +12,7 @@ import {
   Calendar,
   Settings,
   BookOpen,
+  ExternalLink,
   LogOut
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -27,6 +28,7 @@ const navItems = [
   { icon: BarChart3, label: 'Rendimiento', href: '/performance' },
   { icon: MapPin, label: 'Sedes', href: '/sedes' },
   { icon: BookOpen, label: 'Manual', href: '/manual' },
+  { icon: ExternalLink, label: 'Dir. Estratégica', href: 'https://direccion-idip.vercel.app/', external: true },
 ];
 
 export function Sidebar() {
@@ -52,10 +54,14 @@ export function Sidebar() {
       <nav className="flex-1 px-4 space-y-1 mt-4">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
+          const isExternal = 'external' in item && item.external;
+          
           return (
             <Link
               key={item.label}
               href={item.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noopener noreferrer" : undefined}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group",
                 isActive 
@@ -64,7 +70,8 @@ export function Sidebar() {
               )}
             >
               <item.icon size={18} className={cn(isActive ? "text-[#98C222]" : "text-zinc-400 group-hover:text-white")} />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {isExternal && <div className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-[#98C222]" />}
             </Link>
           );
         })}
