@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
   PlusCircle, 
@@ -17,35 +19,51 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', active: true },
-  { icon: Users, label: 'Leads' },
-  { icon: BarChart3, label: 'Rendimiento' },
-  { icon: MapPin, label: 'Sedes' },
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
+  { icon: Users, label: 'Leads', href: '/leads' },
+  { icon: BarChart3, label: 'Rendimiento', href: '/performance' },
+  { icon: MapPin, label: 'Sedes', href: '/sedes' },
 ];
 
 export function Sidebar() {
+  const pathname = usePathname();
+
   return (
     <aside className="w-64 border-r border-zinc-800 flex flex-col h-screen sticky top-0 bg-black/50 backdrop-blur-xl">
-      <div className="p-6 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-rose-600 flex items-center justify-center font-bold text-lg">I</div>
-        <h1 className="font-bold tracking-tight text-xl">IDIP Pulse</h1>
+      <div className="p-6 flex flex-col items-center gap-4">
+        <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="https://idip.com.mx/wp-content/uploads/2024/07/idip-w.png" 
+            alt="IDIP Logo" 
+            className="h-10 w-auto"
+          />
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="h-1.5 w-1.5 rounded-full bg-[#98C222]" />
+          <h1 className="font-bold tracking-tight text-xs uppercase text-zinc-500">Marketing Pulse</h1>
+        </div>
       </div>
       
       <nav className="flex-1 px-4 space-y-1 mt-4">
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            className={cn(
-              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group",
-              item.active 
-                ? "bg-rose-500/10 text-rose-500 font-medium" 
-                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
-            )}
-          >
-            <item.icon size={18} className={cn(item.active ? "text-rose-500" : "text-zinc-400 group-hover:text-white")} />
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group",
+                isActive 
+                  ? "bg-[#98C222]/10 text-[#98C222] font-medium" 
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+              )}
+            >
+              <item.icon size={18} className={cn(isActive ? "text-[#98C222]" : "text-zinc-400 group-hover:text-white")} />
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t border-zinc-800 space-y-2">

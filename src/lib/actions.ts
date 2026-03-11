@@ -10,13 +10,15 @@ export async function createLead(formData: FormData) {
   const categoriaId = parseInt(formData.get('categoriaId') as string);
   const canal = formData.get('canal') as string;
   const status = formData.get('status') as string;
+  const fecha = formData.get('fecha') as string;
 
   try {
     await db.execute({
-      sql: "INSERT INTO leads (nombre_prospecto, telefono, sede_id, categoria_id, canal_origen, status) VALUES (?, ?, ?, ?, ?, ?)",
-      args: [nombre, telefono, sedeId, categoriaId, canal, status]
+      sql: "INSERT INTO leads (nombre_prospecto, telefono, sede_id, categoria_id, canal_origen, status, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      args: [nombre, telefono, sedeId, categoriaId, canal, status, fecha]
     });
     revalidatePath('/');
+    revalidatePath('/leads');
     return { success: true };
   } catch (error) {
     console.error("Error creating lead:", error);
