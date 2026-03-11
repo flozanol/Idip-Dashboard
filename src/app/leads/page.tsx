@@ -3,6 +3,7 @@ import { FilterBar } from "@/components/FilterBar";
 import { LeadForm } from "@/components/LeadForm";
 import { getDashboardData, clearLeads } from "@/lib/actions";
 import { Users } from "lucide-react";
+import { StatusSelector, AttemptCounter } from "@/components/LeadManagement";
 
 export default async function LeadsPage() {
   const { leads, sedes, categorias } = await getDashboardData();
@@ -74,19 +75,11 @@ export default async function LeadsPage() {
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border ${
-                              lead.status === 'Venta' ? 'bg-[#98C222]/10 text-[#98C222] border-[#98C222]/20' :
-                              lead.status === 'Perdido' ? 'bg-zinc-800 text-zinc-500 border-zinc-700' :
-                              'bg-zinc-800 text-zinc-300 border-zinc-700'
-                            }`}>
-                              {String(lead.status)}
-                            </span>
+                            <StatusSelector leadId={lead.id} currentStatus={String(lead.status)} />
                           </td>
                           <td className="px-6 py-4 text-right">
                              <div className="text-zinc-400 font-medium">{new Date(lead.fecha_registro).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}</div>
-                             <div className="text-[10px] text-zinc-600 font-mono italic">
-                               {lead.intentos_contacto > 0 ? `${lead.intentos_contacto} intentos` : 'Nuevo'}
-                             </div>
+                             <AttemptCounter leadId={lead.id} attempts={Number(lead.intentos_contacto || 0)} />
                           </td>
                         </tr>
                       );

@@ -11,6 +11,7 @@ import {
   MapPin, 
   Calendar,
   Settings,
+  BookOpen,
   LogOut
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -25,6 +26,7 @@ const navItems = [
   { icon: Users, label: 'Leads', href: '/leads' },
   { icon: BarChart3, label: 'Rendimiento', href: '/performance' },
   { icon: MapPin, label: 'Sedes', href: '/sedes' },
+  { icon: BookOpen, label: 'Manual', href: '/manual' },
 ];
 
 export function Sidebar() {

@@ -54,3 +54,33 @@ export async function clearLeads() {
     return { success: false };
   }
 }
+
+export async function updateLeadStatus(id: number, status: string) {
+  try {
+    await db.execute({
+      sql: "UPDATE leads SET status = ? WHERE id = ?",
+      args: [status, id]
+    });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating lead status:", error);
+    return { success: false };
+  }
+}
+
+export async function updateLeadAttempts(id: number, attempts: number) {
+  try {
+    await db.execute({
+      sql: "UPDATE leads SET intentos_contacto = ? WHERE id = ?",
+      args: [attempts, id]
+    });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating lead attempts:", error);
+    return { success: false };
+  }
+}
