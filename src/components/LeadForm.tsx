@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect } from 'react';
 import { Plus, X, Send, Edit2 } from 'lucide-react';
 import { createLead, updateLead } from '@/lib/actions';
