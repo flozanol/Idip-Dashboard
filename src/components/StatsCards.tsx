@@ -8,8 +8,8 @@ export function StatsCards({ leads }: { leads: any[] }) {
   
   // Ticket promedio basado en ventas reales
   const ventasLeads = leads.filter(l => l.status === 'Venta');
-  const totalMonto = ventasLeads.reduce((acc, l) => acc + (l.monto_cierre || 3048), 0);
-  const avgTicket = ventasLeads.length > 0 ? (totalMonto / ventasLeads.length).toFixed(0) : '3,048';
+  const totalMonto = ventasLeads.reduce((acc, l) => acc + (l.monto_cierre || 0), 0);
+  const avgTicket = ventasLeads.length > 0 ? (totalMonto / ventasLeads.length).toFixed(0) : '0';
 
   // Lead Velocity (Simulado con datos reales si hay fechas)
   const velocity = totalLeads > 0 ? '3.2d' : '--';

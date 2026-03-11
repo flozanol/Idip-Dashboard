@@ -34,7 +34,7 @@ export async function initDb() {
         categoria_id INTEGER REFERENCES categorias(id),
         canal_origen TEXT NOT NULL,
         status TEXT NOT NULL,
-        monto_cierre REAL DEFAULT 3048,
+        monto_cierre REAL DEFAULT 0,
         intentos_contacto INTEGER DEFAULT 0,
         fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
       );
