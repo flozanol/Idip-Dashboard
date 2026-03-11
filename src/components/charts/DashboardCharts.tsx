@@ -49,7 +49,14 @@ export function FunnelChart() {
         />
         <Tooltip 
           cursor={{ fill: '#27272a' }}
-          contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '8px' }}
+          contentStyle={{ 
+            backgroundColor: '#18181b', 
+            border: '1px solid #3f3f46', 
+            borderRadius: '12px',
+            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.5)'
+          }}
+          labelStyle={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '4px' }}
+          itemStyle={{ color: '#98C222', fontWeight: '800' }}
         />
         <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={32}>
           {funnelData.map((entry, index) => (
@@ -79,7 +86,14 @@ export function ChannelMixChart() {
           ))}
         </Pie>
         <Tooltip 
-          contentStyle={{ backgroundColor: '#18181b', border: '1px solid #27272a', borderRadius: '8px' }}
+          contentStyle={{ 
+            backgroundColor: '#18181b', 
+            border: '1px solid #3f3f46', 
+            borderRadius: '12px',
+            boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.5)'
+          }}
+          labelStyle={{ color: '#ffffff', fontWeight: 'bold', marginBottom: '4px' }}
+          itemStyle={{ color: '#98C222', fontWeight: '800' }}
         />
       </PieChart>
     </ResponsiveContainer>
