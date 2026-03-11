@@ -1,15 +1,28 @@
+'use client'
+
 import { Sidebar } from "@/components/Sidebar";
 import { FilterBar } from "@/components/FilterBar";
 import { LeadForm } from "@/components/LeadForm";
-import { getDashboardData, clearLeads } from "@/lib/actions";
-import { Users } from "lucide-react";
+import { clearLeads } from "@/lib/actions";
+import { Users, Edit2 } from "lucide-react";
 import { StatusSelector, AttemptCounter } from "@/components/LeadManagement";
+import { useState } from "react";
 
-export default async function LeadsPage() {
-  const { leads, sedes, categorias, cursos, vendedores } = await getDashboardData();
+export default function LeadsPage({ 
+  data 
+}: { 
+  data: { 
+    leads: any[], 
+    sedes: any[], 
+    categorias: any[], 
+    cursos: any[], 
+    vendedores: any[] 
+  } 
+}) {
+  const { leads, sedes, categorias, cursos, vendedores } = data;
+  const [editingLead, setEditingLead] = useState<any>(null);
 
   async function handleClear() {
-    'use server'
     await clearLeads();
   }
 
@@ -26,11 +39,12 @@ export default async function LeadsPage() {
                 <div className="text-zinc-500 text-sm">{leads.length} leads registrados</div>
               </div>
               {leads.length > 0 && (
-                <form action={handleClear}>
-                  <button className="text-xs text-rose-500/50 hover:text-rose-500 transition-colors border border-rose-500/20 hover:border-rose-500/50 px-3 py-1.5 rounded-lg font-medium">
-                    Borrar datos de prueba
-                  </button>
-                </form>
+                <button 
+                  onClick={handleClear}
+                  className="text-xs text-rose-500/50 hover:text-rose-500 transition-colors border border-rose-500/20 hover:border-rose-500/50 px-3 py-1.5 rounded-lg font-medium"
+                >
+                  Borrar datos de prueba
+                </button>
               )}
             </div>
 
@@ -45,7 +59,8 @@ export default async function LeadsPage() {
                       <th className="px-6 py-4">Canal</th>
                       <th className="px-6 py-4">Monto</th>
                       <th className="px-6 py-4">Estado</th>
-                      <th className="px-6 py-4 text-right">Registro</th>
+                      <th className="px-6 py-4">Intentos</th>
+                      <th className="px-6 py-4 text-right">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800">
@@ -90,9 +105,19 @@ export default async function LeadsPage() {
                           <td className="px-6 py-4">
                             <StatusSelector leadId={lead.id} currentStatus={String(lead.status)} />
                           </td>
+                          <td className="px-6 py-4">
+                            <AttemptCounter leadId={lead.id} attempts={Number(lead.intentos_contacto || 0)} />
+                          </td>
                           <td className="px-6 py-4 text-right">
-                             <div className="text-zinc-400 font-medium">{new Date(lead.fecha_registro).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}</div>
-                             <AttemptCounter leadId={lead.id} attempts={Number(lead.intentos_contacto || 0)} />
+                             <div className="flex items-center justify-end gap-3 text-zinc-400">
+                               <span className="font-medium text-[11px] font-mono">{new Date(lead.fecha_registro).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' })}</span>
+                               <button 
+                                 onClick={() => setEditingLead(lead)}
+                                 className="p-1.5 hover:bg-zinc-800 rounded-lg hover:text-white transition-all transform active:scale-95"
+                               >
+                                 <Edit2 size={14} />
+                               </button>
+                             </div>
                           </td>
                         </tr>
                       );
@@ -114,7 +139,14 @@ export default async function LeadsPage() {
             </div>
           </div>
         </div>
-        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} />
+        <LeadForm 
+          sedes={sedes} 
+          categorias={categorias} 
+          cursos={cursos} 
+          vendedores={vendedores} 
+          editData={editingLead}
+          onClose={() => setEditingLead(null)}
+        />
       </main>
       
       <style dangerouslySetInnerHTML={{ __html: `

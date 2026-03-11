@@ -35,13 +35,23 @@ export function AttemptCounter({ leadId, attempts }: { leadId: number, attempts:
   };
 
   return (
-    <div className="flex flex-col items-end gap-1">
-      <div className="flex items-center gap-1.5 text-[10px] text-zinc-600 font-mono italic">
-        <span>{attempts} intentos</span>
-        <div className="flex flex-col">
-          <button onClick={() => handleUpdate(1)} className="hover:text-white transition-colors"><ChevronUp size={10} /></button>
-          <button onClick={() => handleUpdate(-1)} className="hover:text-white transition-colors"><ChevronDown size={10} /></button>
-        </div>
+    <div className="flex items-center gap-2 bg-zinc-900/50 border border-zinc-800 rounded-lg px-2 py-1 group/attempts hover:border-zinc-700 transition-colors">
+      <span className="text-[10px] font-mono font-medium text-zinc-500 min-w-[1ch]">{attempts}</span>
+      <div className="flex flex-col border-l border-zinc-800 pl-1.5 ml-0.5">
+        <button 
+          onClick={() => handleUpdate(1)} 
+          className="text-zinc-600 hover:text-[#98C222] transition-colors"
+          title="Incrementar intentos"
+        >
+          <ChevronUp size={12} />
+        </button>
+        <button 
+          onClick={() => handleUpdate(-1)} 
+          className="text-zinc-600 hover:text-rose-500 transition-colors"
+          title="Decrementar intentos"
+        >
+          <ChevronDown size={12} />
+        </button>
       </div>
     </div>
   );

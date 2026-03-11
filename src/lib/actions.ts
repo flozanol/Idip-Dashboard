@@ -30,6 +30,45 @@ export async function createLead(formData: FormData) {
   }
 }
 
+export async function updateLead(leadId: number, formData: FormData) {
+  const nombre = formData.get('nombre') as string;
+  const email = formData.get('email') as string;
+  const telefono = formData.get('telefono') as string;
+  const sedeId = parseInt(formData.get('sedeId') as string);
+  const categoriaId = parseInt(formData.get('categoriaId') as string);
+  const cursoId = formData.get('cursoId') ? parseInt(formData.get('cursoId') as string) : null;
+  const vendedorId = formData.get('vendedorId') ? parseInt(formData.get('vendedorId') as string) : null;
+  const canal = formData.get('canal') as string;
+  const status = formData.get('status') as string;
+  const montoCierre = parseFloat(formData.get('montoCierre') as string) || 0;
+  const fecha = formData.get('fecha') as string;
+
+  try {
+    await db.execute({
+      sql: `UPDATE leads SET 
+            nombre_prospecto = ?, 
+            email = ?, 
+            telefono = ?, 
+            sede_id = ?, 
+            categoria_id = ?, 
+            curso_id = ?, 
+            vendedor_id = ?, 
+            canal_origen = ?, 
+            status = ?, 
+            monto_cierre = ?, 
+            fecha_registro = ? 
+            WHERE id = ?`,
+      args: [nombre, email, telefono, sedeId, categoriaId, cursoId, vendedorId, canal, status, montoCierre, fecha, leadId]
+    });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating lead:", error);
+    return { success: false, error: "Failed to update lead" };
+  }
+}
+
 export async function getDashboardData() {
   try {
     const leads = await db.execute("SELECT * FROM leads ORDER BY fecha_registro DESC");
