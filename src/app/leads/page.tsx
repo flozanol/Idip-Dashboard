@@ -6,7 +6,7 @@ import { Users } from "lucide-react";
 import { StatusSelector, AttemptCounter } from "@/components/LeadManagement";
 
 export default async function LeadsPage() {
-  const { leads, sedes, categorias } = await getDashboardData();
+  const { leads, sedes, categorias, cursos, vendedores } = await getDashboardData();
 
   async function handleClear() {
     'use server'
@@ -40,8 +40,10 @@ export default async function LeadsPage() {
                   <thead className="bg-zinc-900 border-b border-zinc-800 text-zinc-400 font-medium uppercase text-[10px] tracking-wider sticky top-0 z-10">
                     <tr>
                       <th className="px-6 py-4">Prospecto</th>
-                      <th className="px-6 py-4">Sede / Escuela</th>
+                      <th className="px-6 py-4">Sede / Curso</th>
+                      <th className="px-6 py-4">Vendedor</th>
                       <th className="px-6 py-4">Canal</th>
+                      <th className="px-6 py-4">Monto</th>
                       <th className="px-6 py-4">Estado</th>
                       <th className="px-6 py-4 text-right">Registro</th>
                     </tr>
@@ -50,6 +52,8 @@ export default async function LeadsPage() {
                     {leads.map((lead: any) => {
                       const sede = String(sedes.find(s => s.id === lead.sede_id)?.nombre || 'Sede ?');
                       const categoria = String(categorias.find(c => c.id === lead.categoria_id)?.nombre || '---');
+                      const curso = String(cursos.find(c => c.id === lead.curso_id)?.nombre || 'General');
+                      const vendedor = String(vendedores.find(v => v.id === lead.vendedor_id)?.nombre || 'Sin asignar');
                       
                       return (
                         <tr key={lead.id} className="hover:bg-zinc-900/50 transition-colors group">
@@ -63,8 +67,11 @@ export default async function LeadsPage() {
                                  <span className="w-1.5 h-1.5 rounded-full bg-[#98C222]" />
                                  <span className="text-zinc-300 font-medium">{sede}</span>
                                </div>
-                               <span className="text-[10px] text-zinc-500 uppercase tracking-tighter">{categoria}</span>
+                               <span className="text-[10px] text-zinc-500 uppercase tracking-tighter">{curso} ({categoria})</span>
                             </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="text-zinc-400 text-xs">{vendedor}</span>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
@@ -73,6 +80,11 @@ export default async function LeadsPage() {
                                 <span className="text-[9px] font-bold text-[#98C222] bg-[#98C222]/10 px-1.5 py-0.5 rounded-full ring-1 ring-[#98C222]/30">VIP</span>
                               )}
                             </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="font-mono text-[#98C222]">
+                              {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(lead.monto_cierre || 0)}
+                            </span>
                           </td>
                           <td className="px-6 py-4">
                             <StatusSelector leadId={lead.id} currentStatus={String(lead.status)} />
@@ -101,7 +113,7 @@ export default async function LeadsPage() {
             </div>
           </div>
         </div>
-        <LeadForm sedes={sedes} categorias={categorias} />
+        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} />
       </main>
       
       <style dangerouslySetInnerHTML={{ __html: `

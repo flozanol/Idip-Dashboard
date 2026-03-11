@@ -8,7 +8,7 @@ import { initDb } from "@/lib/db";
 
 export default async function Dashboard() {
   await initDb();
-  const { leads, sedes, categorias } = await getDashboardData();
+  const { leads, sedes, categorias, cursos, vendedores, inversiones } = await getDashboardData();
 
   return (
     <div className="flex min-h-screen bg-black overflow-hidden">
@@ -17,7 +17,7 @@ export default async function Dashboard() {
         <FilterBar />
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6 pb-12">
-            <StatsCards leads={leads} />
+            <StatsCards leads={leads} inversiones={inversiones} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-6">
               <div className="lg:col-span-2 premium-card">
@@ -77,7 +77,7 @@ export default async function Dashboard() {
             </div>
           </div>
         </div>
-        <LeadForm sedes={sedes} categorias={categorias} />
+        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} />
       </main>
       
       <style dangerouslySetInnerHTML={{ __html: `

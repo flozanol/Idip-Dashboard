@@ -8,14 +8,17 @@ export async function createLead(formData: FormData) {
   const telefono = formData.get('telefono') as string;
   const sedeId = parseInt(formData.get('sedeId') as string);
   const categoriaId = parseInt(formData.get('categoriaId') as string);
+  const cursoId = formData.get('cursoId') ? parseInt(formData.get('cursoId') as string) : null;
+  const vendedorId = formData.get('vendedorId') ? parseInt(formData.get('vendedorId') as string) : null;
   const canal = formData.get('canal') as string;
   const status = formData.get('status') as string;
+  const montoCierre = parseFloat(formData.get('montoCierre') as string) || 0;
   const fecha = formData.get('fecha') as string;
 
   try {
     await db.execute({
-      sql: "INSERT INTO leads (nombre_prospecto, telefono, sede_id, categoria_id, canal_origen, status, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      args: [nombre, telefono, sedeId, categoriaId, canal, status, fecha]
+      sql: "INSERT INTO leads (nombre_prospecto, telefono, sede_id, categoria_id, curso_id, vendedor_id, canal_origen, status, monto_cierre, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      args: [nombre, telefono, sedeId, categoriaId, cursoId, vendedorId, canal, status, montoCierre, fecha]
     });
     revalidatePath('/');
     revalidatePath('/leads');
@@ -31,15 +34,91 @@ export async function getDashboardData() {
     const leads = await db.execute("SELECT * FROM leads ORDER BY fecha_registro DESC");
     const sedes = await db.execute("SELECT * FROM sedes");
     const categorias = await db.execute("SELECT * FROM categorias");
+    const cursos = await db.execute("SELECT * FROM cursos");
+    const vendedores = await db.execute("SELECT * FROM vendedores");
+    const inversiones = await db.execute("SELECT * FROM inversiones");
     
     return {
       leads: leads.rows,
       sedes: sedes.rows,
       categorias: categorias.rows,
+      cursos: cursos.rows,
+      vendedores: vendedores.rows,
+      inversiones: inversiones.rows,
     };
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
-    return { leads: [], sedes: [], categorias: [] };
+    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [] };
+  }
+}
+
+// Courses Management
+export async function addCourse(nombre: string) {
+  try {
+    await db.execute({
+      sql: "INSERT INTO cursos (nombre) VALUES (?)",
+      args: [nombre]
+    });
+    revalidatePath('/settings');
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function deleteCourse(id: number) {
+  try {
+    await db.execute({
+      sql: "DELETE FROM cursos WHERE id = ?",
+      args: [id]
+    });
+    revalidatePath('/settings');
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+// Vendors Management
+export async function addVendor(nombre: string) {
+  try {
+    await db.execute({
+      sql: "INSERT INTO vendedores (nombre) VALUES (?)",
+      args: [nombre]
+    });
+    revalidatePath('/settings');
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+export async function deleteVendor(id: number) {
+  try {
+    await db.execute({
+      sql: "DELETE FROM vendedores WHERE id = ?",
+      args: [id]
+    });
+    revalidatePath('/settings');
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+}
+
+// Investments Tracking
+export async function updateInvestment(canal: string, mes: number, anio: number, monto: number) {
+  try {
+    await db.execute({
+      sql: "INSERT INTO inversiones (canal, mes, anio, monto) VALUES (?, ?, ?, ?) ON CONFLICT(canal, mes, anio) DO UPDATE SET monto = excluded.monto",
+      args: [canal, mes, anio, monto]
+    });
+    revalidatePath('/investments');
+    revalidatePath('/');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating investment:", error);
+    return { success: false };
   }
 }
 

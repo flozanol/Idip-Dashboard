@@ -26,12 +26,39 @@ export async function initDb() {
     `);
 
     await db.execute(`
+      CREATE TABLE IF NOT EXISTS cursos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT UNIQUE NOT NULL
+      );
+    `);
+
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS vendedores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT UNIQUE NOT NULL
+      );
+    `);
+
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS inversiones (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        canal TEXT NOT NULL,
+        mes INTEGER NOT NULL,
+        anio INTEGER NOT NULL,
+        monto REAL DEFAULT 0,
+        UNIQUE(canal, mes, anio)
+      );
+    `);
+
+    await db.execute(`
       CREATE TABLE IF NOT EXISTS leads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre_prospecto TEXT NOT NULL,
         telefono TEXT,
         sede_id INTEGER REFERENCES sedes(id),
         categoria_id INTEGER REFERENCES categorias(id),
+        curso_id INTEGER REFERENCES cursos(id),
+        vendedor_id INTEGER REFERENCES vendedores(id),
         canal_origen TEXT NOT NULL,
         status TEXT NOT NULL,
         monto_cierre REAL DEFAULT 0,
@@ -39,6 +66,14 @@ export async function initDb() {
         fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
       );
     `);
+
+    // Add columns if they don't exist (Migration)
+    try {
+      await db.execute("ALTER TABLE leads ADD COLUMN curso_id INTEGER REFERENCES cursos(id)");
+    } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE leads ADD COLUMN vendedor_id INTEGER REFERENCES vendedores(id)");
+    } catch (e) {}
 
     // Seed Sedes
     const sedes = ['Polanco', 'Querétaro', 'Online', 'On-Demand'];

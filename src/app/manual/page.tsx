@@ -9,7 +9,8 @@ import {
   AlertTriangle,
   Lightbulb,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  Settings
 } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { FilterBar } from '@/components/FilterBar';
@@ -21,46 +22,47 @@ export default function ManualPage() {
       icon: Target,
       color: "text-[#98C222]",
       bg: "bg-[#98C222]/10",
-      content: "La captura es la base de todo. Usa el botón '+' flotante en la esquina inferior derecha para abrir el formulario rápido.",
+      content: "La captura es la base de todo. Usa el botón '+' flotante para registrar prospectos, especificando el curso, vendedor y monto de venta.",
       tips: [
-        "Selecciona la fecha correcta si estás subiendo información de días anteriores.",
-        "Elige el canal adecuado para que el 'Mix de Canales' sea preciso.",
-        "Los 'Recomendados' se marcan automáticamente como VIP."
+        "Ingresa el monto de la venta para que el Ticket Promedio sea real.",
+        "Asigna un vendedor para llevar el control de comisiones o desempeño.",
+        "Selecciona el curso específico para el que aplica el lead."
       ]
     },
     {
-      title: "2. Gestión de Fases",
-      icon: MousePointerClick,
+      title: "2. Rendimiento (ROI)",
+      icon: Zap,
+      color: "text-amber-500",
+      bg: "bg-amber-500/10",
+      content: "Conoce el retorno de inversión real. El sistema cruza tus ventas logradas con lo que invertiste en publicidad.",
+      tips: [
+        "Actualiza tus inversiones mensuales en la sección correspondiente.",
+        "Un ROI mayor a 1 indica que estás recuperando lo invertido.",
+        "Compara el rendimiento entre canales para optimizar tu gasto."
+      ]
+    },
+    {
+      title: "3. Inversiones por Canal",
+      icon: TrendingUp,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
-      content: "Ahora puedes cambiar el estado de un lead directamente desde la tabla de Leads sin recargar la página.",
+      content: "Registra cuánto inviertes al mes en Google, Facebook, etc. para obtener métricas de rentabilidad precisas.",
       tips: [
-        "Nuevo: Prospecto recién ingresado.",
-        "Contactado: Ya hubo una primera interacción.",
-        "Seguimiento: Interés activo, proceso de venta.",
-        "Venta/Perdido: Cierre del ciclo."
+        "Hazlo una vez al mes o actualiza si aumentó el presupuesto.",
+        "Elige el mes y año correctamente antes de guardar.",
+        "Usa el botón de guardado individual por canal."
       ]
     },
     {
-      title: "3. Interpretación del Dashboard",
-      icon: TrendingUp,
+      title: "4. Catálogos y Filtros",
+      icon: Settings,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
-      content: "El dashboard te da la temperatura del negocio en tiempo real. Fíjate en el Embudo de Conversión.",
+      content: "Mantén tus catálogos de Cursos y Vendedores actualizados desde la sección de Configuración.",
       tips: [
-        "Un embudo muy 'ancho' arriba y muy 'estrecho' abajo indica problemas en el seguimiento.",
-        "El Ticket Promedio te ayuda a ver si estás vendiendo certificaciones de alto valor."
-      ]
-    },
-    {
-      title: "4. Alertas de Pérdida",
-      icon: AlertTriangle,
-      color: "text-rose-500",
-      bg: "bg-rose-500/10",
-      content: "El sistema detecta automáticamente leads en riesgo. Si un lead tiene más de 4 intentos aparecerá aquí.",
-      tips: [
-        "No dejes que el widget de alertas se llene: contacta a esos leads o cámbialos a 'Perdido'.",
-        "Atención inmediata a prospectos de alta prioridad."
+        "Da de alta cursos nuevos antes de empezar su campaña.",
+        "Borra vendedores que ya no estén activos para limpiar el formulario.",
+        "Usa los filtros del Dashboard para segmentar por periodos."
       ]
     }
   ];
