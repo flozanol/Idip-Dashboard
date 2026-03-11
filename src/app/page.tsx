@@ -80,12 +80,12 @@ export default async function Dashboard() {
         <LeadForm sedes={sedes} categorias={categorias} />
       </main>
       
-      <style dangerouslySetInnerHTML={{ __html: \`
+      <style dangerouslySetInnerHTML={{ __html: `
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
-      \`}} />
+      `}} />
     </div>
   );
 }
