@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { FilterBar } from "@/components/FilterBar";
 import { LeadForm } from "@/components/LeadForm";
 import { getDashboardData, clearLeads } from "@/lib/actions";
+import { Users } from "lucide-react";
 
 export default async function LeadsPage() {
   const { leads, sedes, categorias } = await getDashboardData();
@@ -46,14 +47,14 @@ export default async function LeadsPage() {
                   </thead>
                   <tbody className="divide-y divide-zinc-800">
                     {leads.map((lead: any) => {
-                      const sede = sedes.find(s => s.id === lead.sede_id)?.nombre || 'Sede ?';
-                      const categoria = categorias.find(c => c.id === lead.categoria_id)?.nombre || '---';
+                      const sede = String(sedes.find(s => s.id === lead.sede_id)?.nombre || 'Sede ?');
+                      const categoria = String(categorias.find(c => c.id === lead.categoria_id)?.nombre || '---');
                       
                       return (
                         <tr key={lead.id} className="hover:bg-zinc-900/50 transition-colors group">
                           <td className="px-6 py-4">
-                            <div className="font-semibold text-white">{lead.nombre_prospecto}</div>
-                            <div className="text-zinc-500 text-xs">{lead.telefono || 'Sin teléfono'}</div>
+                            <div className="font-semibold text-white">{String(lead.nombre_prospecto)}</div>
+                            <div className="text-zinc-500 text-xs">{String(lead.telefono || 'Sin teléfono')}</div>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex flex-col gap-1">
@@ -66,7 +67,7 @@ export default async function LeadsPage() {
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
-                              <span className="text-zinc-300">{lead.canal_origen}</span>
+                              <span className="text-zinc-300">{String(lead.canal_origen)}</span>
                               {lead.canal_origen === 'Recomendados' && (
                                 <span className="text-[9px] font-bold text-[#98C222] bg-[#98C222]/10 px-1.5 py-0.5 rounded-full ring-1 ring-[#98C222]/30">VIP</span>
                               )}
@@ -78,7 +79,7 @@ export default async function LeadsPage() {
                               lead.status === 'Perdido' ? 'bg-zinc-800 text-zinc-500 border-zinc-700' :
                               'bg-zinc-800 text-zinc-300 border-zinc-700'
                             }`}>
-                              {lead.status}
+                              {String(lead.status)}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-right">

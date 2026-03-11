@@ -40,7 +40,7 @@ export default async function Dashboard() {
                     const conversion = sedeLeads.length > 0 ? ((sedeVentas / sedeLeads.length) * 100).toFixed(1) : '0.0';
                     return (
                       <div key={sede.id} className="flex items-center justify-between p-3 rounded-lg bg-zinc-900/50 border border-zinc-800">
-                        <span className="font-medium">{sede.nombre}</span>
+                        <span className="font-medium">{String(sede.nombre)}</span>
                         <div className="flex items-center gap-4">
                           <span className="text-xs text-zinc-500">Leads: <span className="text-white">{sedeLeads.length}</span></span>
                           <span className="text-xs text-zinc-500">Conversión: <span className="text-[#98C222]">{conversion}%</span></span>
@@ -57,12 +57,12 @@ export default async function Dashboard() {
                   Alertas de Pérdida
                 </h4>
                 <div className="flex flex-col items-center justify-center h-48 text-zinc-600 text-center px-8">
-                  {leads.filter(l => l.intentos_contacto >= 4 && l.status !== 'Venta').length > 0 ? (
+                  {leads.filter(l => Number(l.intentos_contacto || 0) >= 4 && String(l.status) !== 'Venta').length > 0 ? (
                     <div className="space-y-4 w-full">
-                       {leads.filter(l => l.intentos_contacto >= 4 && l.status !== 'Venta').slice(0, 3).map((l: any) => (
+                       {leads.filter(l => Number(l.intentos_contacto || 0) >= 4 && String(l.status) !== 'Venta').slice(0, 3).map((l: any) => (
                          <div key={l.id} className="text-left p-2 rounded bg-rose-500/10 border border-rose-500/20">
-                            <div className="text-xs text-rose-200 font-bold">{l.nombre_prospecto}</div>
-                            <div className="text-[10px] text-rose-500">{l.intentos_contacto} intentos fallidos</div>
+                            <div className="text-xs text-rose-200 font-bold">{String(l.nombre_prospecto)}</div>
+                            <div className="text-[10px] text-rose-500">{String(l.intentos_contacto)} intentos fallidos</div>
                          </div>
                        ))}
                     </div>
