@@ -4,7 +4,7 @@ import { LeadForm } from "@/components/LeadForm";
 import { getDashboardData } from "@/lib/actions";
 
 export default async function PerformancePage() {
-  const { sedes, categorias } = await getDashboardData();
+  const { sedes, categorias, cursos, vendedores } = await getDashboardData();
   return (
     <div className="flex min-h-screen bg-black overflow-hidden text-white">
       <Sidebar />
@@ -18,7 +18,7 @@ export default async function PerformancePage() {
             </div>
           </div>
         </div>
-        <LeadForm sedes={sedes} categorias={categorias} />
+        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} />
       </main>
     </div>
   );
