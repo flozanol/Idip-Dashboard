@@ -42,3 +42,15 @@ export async function getDashboardData() {
     return { leads: [], sedes: [], categorias: [] };
   }
 }
+
+export async function clearLeads() {
+  try {
+    await db.execute("DELETE FROM leads");
+    revalidatePath('/');
+    revalidatePath('/leads');
+    return { success: true };
+  } catch (error) {
+    console.error("Error clearing leads:", error);
+    return { success: false };
+  }
+}

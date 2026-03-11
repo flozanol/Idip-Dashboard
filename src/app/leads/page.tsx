@@ -1,10 +1,15 @@
 import { Sidebar } from "@/components/Sidebar";
 import { FilterBar } from "@/components/FilterBar";
 import { LeadForm } from "@/components/LeadForm";
-import { getDashboardData } from "@/lib/actions";
+import { getDashboardData, clearLeads } from "@/lib/actions";
 
 export default async function LeadsPage() {
   const { leads, sedes, categorias } = await getDashboardData();
+
+  async function handleClear() {
+    'use server'
+    await clearLeads();
+  }
 
   return (
     <div className="flex min-h-screen bg-black overflow-hidden text-white">
@@ -14,8 +19,15 @@ export default async function LeadsPage() {
         <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold tracking-tight">Gestión de Leads</h2>
-              <div className="text-zinc-500 text-sm">{leads.length} leads registrados</div>
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight">Gestión de Leads</h2>
+                <div className="text-zinc-500 text-sm">{leads.length} leads registrados</div>
+              </div>
+              <form action={handleClear}>
+                <button className="text-xs text-rose-500/50 hover:text-rose-500 transition-colors border border-rose-500/20 hover:border-rose-500/50 px-3 py-1.5 rounded-lg">
+                  Borrar datos de prueba
+                </button>
+              </form>
             </div>
 
             <div className="premium-card overflow-hidden !p-0">
