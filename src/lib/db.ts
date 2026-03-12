@@ -16,6 +16,15 @@ export async function initDb() {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT UNIQUE NOT NULL
       );
+
+      CREATE TABLE IF NOT EXISTS usuarios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        rol TEXT NOT NULL, -- 'Director', 'Gerente', 'Vendedor'
+        sede_id INTEGER REFERENCES sedes(id)
+      );
     `);
 
     await db.execute(`
@@ -80,6 +89,7 @@ export async function initDb() {
         categoria_id INTEGER REFERENCES categorias(id),
         curso_id INTEGER REFERENCES cursos(id),
         vendedor_id INTEGER REFERENCES vendedores(id),
+        usuario_id INTEGER REFERENCES usuarios(id),
         canal_origen TEXT NOT NULL,
         status TEXT NOT NULL,
         monto_cierre REAL DEFAULT 0,
@@ -100,6 +110,9 @@ export async function initDb() {
     } catch (e) {}
     try {
       await db.execute("ALTER TABLE marketing_metrics ADD COLUMN pin_followers INTEGER DEFAULT 0");
+    } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE leads ADD COLUMN usuario_id INTEGER REFERENCES usuarios(id)");
     } catch (e) {}
 
     // Seed Sedes

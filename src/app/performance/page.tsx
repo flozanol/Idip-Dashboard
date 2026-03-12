@@ -1,7 +1,10 @@
 import { getDashboardData } from "@/lib/actions";
+import { getSession } from "@/lib/auth";
 import PerformanceClient from "./PerformanceClient";
 
-export default async function PerformancePage() {
+export default async function Page() {
   const data = await getDashboardData();
-  return <PerformanceClient data={data} />;
+  const session = await getSession();
+  
+  return <PerformanceClient data={{ ...data, currentUser: session?.user }} />;
 }

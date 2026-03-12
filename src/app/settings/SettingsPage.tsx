@@ -9,10 +9,12 @@ import { MobileHeader } from '@/components/MobileHeader';
 
 export default function SettingsPage({ 
   cursos = [], 
-  vendedores = [] 
+  vendedores = [],
+  currentUser
 }: { 
   cursos: any[], 
-  vendedores: any[] 
+  vendedores: any[],
+  currentUser?: any
 }) {
   const [newCourse, setNewCourse] = useState('');
   const [newVendor, setNewVendor] = useState('');
@@ -42,9 +44,9 @@ export default function SettingsPage({
         />
       )}
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} currentUser={currentUser} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} currentUser={currentUser} />
         <FilterBar />
         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
           <div className="max-w-4xl mx-auto space-y-12 pb-20">

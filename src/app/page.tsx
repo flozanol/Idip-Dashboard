@@ -1,11 +1,10 @@
 import { getDashboardData } from "@/lib/actions";
-import { initDb } from "@/lib/db";
-import { MobileHeader } from "@/components/MobileHeader";
+import { getSession } from "@/lib/auth";
 import ClientDashboardWrapper from "./ClientDashboardWrapper";
 
-export default async function Dashboard() {
-  await initDb();
+export default async function Page() {
   const data = await getDashboardData();
-
-  return <ClientDashboardWrapper data={data} />;
+  const session = await getSession();
+  
+  return <ClientDashboardWrapper data={{ ...data, currentUser: session?.user }} />;
 }

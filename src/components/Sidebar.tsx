@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { logoutAction } from '@/lib/actions';
 import { 
   LayoutDashboard, 
   PlusCircle, 
@@ -27,14 +28,15 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
   { icon: Users, label: 'Leads', href: '/leads' },
   { icon: BarChart3, label: 'Inversiones', href: '/investments' },
-  { icon: Users, label: 'Redes Sociales', href: '/marketing-metrics' },
+  { icon: BarChart3, label: 'Redes Sociales', href: '/marketing-metrics' },
   { icon: Settings, label: 'Configuración', href: '/settings' },
   { icon: MapPin, label: 'Sedes', href: '/sedes' },
   { icon: BookOpen, label: 'Manual', href: '/manual' },
+  { icon: Users, label: 'Vendedores', href: '/users', roles: ['Director'] },
   { icon: ExternalLink, label: 'Dir. Estratégica', href: 'https://direccion-idip.vercel.app/', external: true },
 ];
 
-export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () => void }) {
+export function Sidebar({ isOpen, onClose, currentUser }: { isOpen?: boolean, onClose?: () => void, currentUser?: any }) {
   const pathname = usePathname();
 
   return (
@@ -67,6 +69,8 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
       
       <nav className="flex-1 px-4 space-y-1 mt-4">
         {navItems.map((item) => {
+          if (item.roles && !item.roles.includes(currentUser?.rol)) return null;
+          
           const isActive = pathname === item.href;
           const isExternal = 'external' in item && item.external;
           
@@ -91,8 +95,17 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
         })}
       </nav>
 
-      <div className="p-4 border-t border-zinc-800 space-y-2">
-        <button className="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-400 hover:text-white rounded-lg transition-colors text-rose-400/80 hover:text-rose-400">
+      <div className="p-4 border-t border-zinc-800 space-y-4">
+        {currentUser && (
+          <div className="px-3 py-2 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
+            <p className="text-[10px] font-bold text-[#afca0b] uppercase tracking-widest">{currentUser.rol}</p>
+            <p className="text-sm font-bold text-white truncate">{currentUser.nombre}</p>
+          </div>
+        )}
+        <button 
+          onClick={() => logoutAction()}
+          className="w-full flex items-center gap-3 px-3 py-2 text-sm text-zinc-400 hover:text-white rounded-lg transition-colors text-rose-400/80 hover:text-rose-400"
+        >
           <LogOut size={18} />
           Cerrar Sesión
         </button>

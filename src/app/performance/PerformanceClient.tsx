@@ -13,10 +13,11 @@ export default function PerformanceClient({
     sedes: any[], 
     categorias: any[], 
     cursos: any[], 
-    vendedores: any[] 
+    vendedores: any[],
+    currentUser?: any
   } 
 }) {
-  const { sedes, categorias, cursos, vendedores } = data;
+  const { sedes, categorias, cursos, vendedores, currentUser } = data;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -29,9 +30,9 @@ export default function PerformanceClient({
         />
       )}
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} currentUser={currentUser} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} currentUser={currentUser} />
         <FilterBar />
         <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6">
@@ -41,7 +42,7 @@ export default function PerformanceClient({
             </div>
           </div>
         </div>
-        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} />
+        <LeadForm sedes={sedes} categorias={categorias} cursos={cursos} vendedores={vendedores} currentUser={currentUser} />
       </main>
       
       <style dangerouslySetInnerHTML={{ __html: `

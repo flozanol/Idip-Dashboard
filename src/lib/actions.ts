@@ -2,6 +2,9 @@
 
 import { db } from './db';
 import { revalidatePath } from 'next/cache';
+import { getSession, hashPassword, verifyPassword, encrypt } from './auth';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function createLead(formData: FormData) {
   const nombre = formData.get('nombre') as string;
@@ -16,10 +19,14 @@ export async function createLead(formData: FormData) {
   const montoCierre = parseFloat(formData.get('montoCierre') as string) || 0;
   const fecha = formData.get('fecha') as string;
 
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const usuarioId = session.user.id;
+
   try {
     await db.execute({
-      sql: "INSERT INTO leads (nombre_prospecto, email, telefono, sede_id, categoria_id, curso_id, vendedor_id, canal_origen, status, monto_cierre, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      args: [nombre, email, telefono, sedeId, categoriaId, cursoId, vendedorId, canal, status, montoCierre, fecha]
+      sql: "INSERT INTO leads (nombre_prospecto, email, telefono, sede_id, categoria_id, curso_id, vendedor_id, usuario_id, canal_origen, status, monto_cierre, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      args: [nombre, email, telefono, sedeId, categoriaId, cursoId, vendedorId, usuarioId, canal, status, montoCierre, fecha]
     });
     revalidatePath('/');
     revalidatePath('/leads');
@@ -43,7 +50,30 @@ export async function updateLead(leadId: number, formData: FormData) {
   const montoCierre = parseFloat(formData.get('montoCierre') as string) || 0;
   const fecha = formData.get('fecha') as string;
 
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const { rol, id: usuarioId, sede_id: userSedeId } = session.user;
+
   try {
+    // Permission check
+    if (rol === 'Vendedor') {
+      const currentLead = await db.execute({
+        sql: "SELECT usuario_id FROM leads WHERE id = ?",
+        args: [leadId]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).usuario_id !== usuarioId) {
+        return { success: false, error: "No tienes permiso para editar este lead" };
+      }
+    } else if (rol === 'Gerente') {
+      const currentLead = await db.execute({
+        sql: "SELECT sede_id FROM leads WHERE id = ?",
+        args: [leadId]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).sede_id !== userSedeId) {
+        return { success: false, error: "No tienes permiso para editar leads de otras sedes" };
+      }
+    }
+
     await db.execute({
       sql: `UPDATE leads SET 
             nombre_prospecto = ?, 
@@ -70,8 +100,29 @@ export async function updateLead(leadId: number, formData: FormData) {
 }
 
 export async function getDashboardData() {
+  const session = await getSession();
+  if (!session) return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null };
+
+  const { rol, id: usuarioId, sede_id: userSedeId } = session.user;
+
   try {
-    const leads = await db.execute("SELECT * FROM leads ORDER BY fecha_registro DESC");
+    let leadsQuery = `
+      SELECT l.*, u.nombre as owner_nombre 
+      FROM leads l
+      LEFT JOIN usuarios u ON l.usuario_id = u.id
+    `;
+    let leadsArgs: any[] = [];
+
+    if (rol === 'Gerente') {
+      leadsQuery += " WHERE l.sede_id = ?";
+      leadsArgs.push(userSedeId);
+    } else if (rol === 'Vendedor') {
+      leadsQuery += " WHERE l.usuario_id = ?";
+      leadsArgs.push(usuarioId);
+    }
+    leadsQuery += " ORDER BY l.fecha_registro DESC";
+
+    const leads = await db.execute({ sql: leadsQuery, args: leadsArgs });
     const sedes = await db.execute("SELECT * FROM sedes");
     const categorias = await db.execute("SELECT * FROM categorias");
     const cursos = await db.execute("SELECT * FROM cursos");
@@ -87,10 +138,11 @@ export async function getDashboardData() {
       vendedores: vendedores.rows,
       inversiones: inversiones.rows,
       marketingMetrics: marketingMetrics.rows[0] || null,
+      currentUser: session.user
     };
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
-    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null };
+    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null, currentUser: null };
   }
 }
 
@@ -237,6 +289,9 @@ export async function updateInvestment(canal: string, mes: number, anio: number,
 }
 
 export async function clearLeads() {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
   try {
     await db.execute("DELETE FROM leads");
     revalidatePath('/');
@@ -252,7 +307,30 @@ export async function clearLeads() {
 }
 
 export async function updateLeadStatus(id: number, status: string) {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const { rol, id: usuarioId, sede_id: userSedeId } = session.user;
+
   try {
+    // Permission check
+    if (rol === 'Vendedor') {
+      const currentLead = await db.execute({
+        sql: "SELECT usuario_id FROM leads WHERE id = ?",
+        args: [id]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).usuario_id !== usuarioId) {
+        return { success: false, error: "No tienes permiso" };
+      }
+    } else if (rol === 'Gerente') {
+      const currentLead = await db.execute({
+        sql: "SELECT sede_id FROM leads WHERE id = ?",
+        args: [id]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).sede_id !== userSedeId) {
+        return { success: false, error: "No tienes permiso" };
+      }
+    }
+
     await db.execute({
       sql: "UPDATE leads SET status = ? WHERE id = ?",
       args: [status, id]
@@ -267,7 +345,30 @@ export async function updateLeadStatus(id: number, status: string) {
 }
 
 export async function updateLeadAttempts(id: number, attempts: number) {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const { rol, id: usuarioId, sede_id: userSedeId } = session.user;
+
   try {
+    // Permission check
+    if (rol === 'Vendedor') {
+      const currentLead = await db.execute({
+        sql: "SELECT usuario_id FROM leads WHERE id = ?",
+        args: [id]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).usuario_id !== usuarioId) {
+        return { success: false, error: "No tienes permiso" };
+      }
+    } else if (rol === 'Gerente') {
+      const currentLead = await db.execute({
+        sql: "SELECT sede_id FROM leads WHERE id = ?",
+        args: [id]
+      });
+      if (currentLead.rows.length === 0 || (currentLead.rows[0] as any).sede_id !== userSedeId) {
+        return { success: false, error: "No tienes permiso" };
+      }
+    }
+
     await db.execute({
       sql: "UPDATE leads SET intentos_contacto = ? WHERE id = ?",
       args: [attempts, id]
@@ -278,5 +379,107 @@ export async function updateLeadAttempts(id: number, attempts: number) {
   } catch (error) {
     console.error("Error updating lead attempts:", error);
     return { success: false };
+  }
+}
+
+// Auth Actions
+export async function loginAction(formData: FormData) {
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  try {
+    const result = await db.execute({
+      sql: "SELECT * FROM usuarios WHERE email = ?",
+      args: [email]
+    });
+
+    if (result.rows.length === 0) {
+      return { success: false, error: "Credenciales inválidas" };
+    }
+
+    const user = result.rows[0] as any;
+    const isValid = await verifyPassword(password, user.password);
+
+    if (!isValid) {
+      return { success: false, error: "Credenciales inválidas" };
+    }
+
+    const expires = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours
+    const session = await encrypt({ 
+      user: { 
+        id: user.id, 
+        nombre: user.nombre, 
+        email: user.email, 
+        rol: user.rol, 
+        sede_id: user.sede_id 
+      }, 
+      expires 
+    });
+
+    (await cookies()).set('session', session, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    
+    return { success: true };
+  } catch (error) {
+    console.error("Login error:", error);
+    return { success: false, error: "Error en el servidor" };
+  }
+}
+
+export async function logoutAction() {
+  (await cookies()).set('session', '', { expires: new Date(0) });
+  redirect('/login');
+}
+
+export async function setupAdmin(formData: FormData) {
+  const nombre = formData.get('nombre') as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  try {
+    const hashedPassword = await hashPassword(password);
+    await db.execute({
+      sql: "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, 'Director')",
+      args: [nombre, email, hashedPassword]
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Setup error:", error);
+    return { success: false, error: "Error creating admin" };
+  }
+}
+
+export async function createUser(formData: FormData) {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
+  const nombre = formData.get('nombre') as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  const rol = formData.get('rol') as string;
+  const sedeId = parseInt(formData.get('sedeId') as string) || null;
+
+  try {
+    const hashedPassword = await hashPassword(password);
+    await db.execute({
+      sql: "INSERT INTO usuarios (nombre, email, password, rol, sede_id) VALUES (?, ?, ?, ?, ?)",
+      args: [nombre, email, hashedPassword, rol, sedeId]
+    });
+    revalidatePath('/users');
+    return { success: true };
+  } catch (error) {
+    console.error("Create user error:", error);
+    return { success: false, error: "Error creating user" };
+  }
+}
+
+export async function getAllUsers() {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return [];
+
+  try {
+    const result = await db.execute("SELECT id, nombre, email, rol, sede_id FROM usuarios");
+    return result.rows;
+  } catch (error) {
+    return [];
   }
 }

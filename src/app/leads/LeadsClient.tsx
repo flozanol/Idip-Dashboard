@@ -17,10 +17,11 @@ export default function LeadsPage({
     sedes: any[], 
     categorias: any[], 
     cursos: any[], 
-    vendedores: any[] 
+    vendedores: any[],
+    currentUser?: any
   } 
 }) {
-  const { leads, sedes, categorias, cursos, vendedores } = data;
+  const { leads, sedes, categorias, cursos, vendedores, currentUser } = data;
   const [editingLead, setEditingLead] = useState<any>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -35,9 +36,9 @@ export default function LeadsPage({
         />
       )}
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} currentUser={currentUser} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} currentUser={currentUser} />
         <FilterBar />
         <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6">
@@ -68,7 +69,7 @@ export default function LeadsPage({
                       const sede = String(sedes.find(s => s.id === lead.sede_id)?.nombre || 'Sede ?');
                       const categoria = String(categorias.find(c => c.id === lead.categoria_id)?.nombre || '---');
                       const curso = String(cursos.find(c => c.id === lead.curso_id)?.nombre || 'General');
-                      const vendedor = String(vendedores.find(v => v.id === lead.vendedor_id)?.nombre || 'Sin asignar');
+                      const ownerName = lead.owner_nombre || String(vendedores.find(v => v.id === lead.vendedor_id)?.nombre || 'Sin asignar');
                       
                       return (
                         <tr key={lead.id} className="hover:bg-zinc-900/50 transition-colors group">
@@ -87,7 +88,7 @@ export default function LeadsPage({
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <span className="text-zinc-400 text-xs">{vendedor}</span>
+                            <span className="text-zinc-400 text-xs">{ownerName}</span>
                           </td>
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-2">
