@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, TrendingUp, DollarSign, Zap } from 'lucide-react';
+import { Users, TrendingUp, DollarSign, Zap, Target } from 'lucide-react';
 
 export function StatsCards({ leads, inversiones = [] }: { leads: any[], inversiones?: any[] }) {
   const totalLeads = leads.length;
@@ -18,11 +18,12 @@ export function StatsCards({ leads, inversiones = [] }: { leads: any[], inversio
     { label: 'Total Leads', value: totalLeads.toLocaleString(), icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10' },
     { label: 'Inversión Total', value: `$${totalInversion.toLocaleString()}`, icon: DollarSign, color: 'text-rose-500', bg: 'bg-rose-500/10' },
     { label: 'Costo por Lead', value: totalLeads > 0 ? `$${(totalInversion / totalLeads).toFixed(0)}` : '$0', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-    { label: 'Conversión', value: `${conversionRate}%`, icon: TrendingUp, color: 'text-[#afca0b]', bg: 'bg-[#afca0b]/10' },
+    { label: 'Conversión', value: `${conversionRate}%`, icon: Target, color: 'text-[#afca0b]', bg: 'bg-[#afca0b]/10' },
+    { label: 'ROI (Retorno)', value: roi !== '--' ? `x${roi}` : '--', icon: TrendingUp, color: 'text-purple-500', bg: 'bg-purple-500/10' },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 px-6 pt-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 px-6 pt-6">
       {stats.map((stat) => (
         <div key={stat.label} className="premium-card group hover:border-zinc-700 transition-all duration-300">
           <div className="flex items-start justify-between">
