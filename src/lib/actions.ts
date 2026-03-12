@@ -99,6 +99,10 @@ export async function addCourse(nombre: string) {
       sql: "INSERT INTO cursos (nombre) VALUES (?)",
       args: [nombre]
     });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    revalidatePath('/sedes');
+    revalidatePath('/performance');
     revalidatePath('/settings');
     return { success: true };
   } catch (error) {
@@ -112,6 +116,10 @@ export async function deleteCourse(id: number) {
       sql: "DELETE FROM cursos WHERE id = ?",
       args: [id]
     });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    revalidatePath('/sedes');
+    revalidatePath('/performance');
     revalidatePath('/settings');
     return { success: true };
   } catch (error) {
@@ -126,6 +134,10 @@ export async function addVendor(nombre: string) {
       sql: "INSERT INTO vendedores (nombre) VALUES (?)",
       args: [nombre]
     });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    revalidatePath('/sedes');
+    revalidatePath('/performance');
     revalidatePath('/settings');
     return { success: true };
   } catch (error) {
@@ -139,6 +151,10 @@ export async function deleteVendor(id: number) {
       sql: "DELETE FROM vendedores WHERE id = ?",
       args: [id]
     });
+    revalidatePath('/');
+    revalidatePath('/leads');
+    revalidatePath('/sedes');
+    revalidatePath('/performance');
     revalidatePath('/settings');
     return { success: true };
   } catch (error) {
