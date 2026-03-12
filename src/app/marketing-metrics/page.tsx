@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { Sidebar } from "@/components/Sidebar";
 import { MobileHeader } from "@/components/MobileHeader";
 import { MarketingMetricsForm } from "@/components/MarketingMetricsForm";
-import { Globe } from 'lucide-center';
-import { Globe as GlobeIcon } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 export default function MarketingMetricsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -32,7 +31,7 @@ export default function MarketingMetricsPage() {
               
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 rounded-2xl bg-[#afca0b]/10 text-[#afca0b]">
-                  <GlobeIcon size={24} />
+                  <Globe size={24} />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold tracking-tight">Métricas de Marketing</h1>
