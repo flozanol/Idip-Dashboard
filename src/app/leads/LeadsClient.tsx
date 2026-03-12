@@ -145,6 +145,7 @@ export default function LeadsPage({
           categorias={categorias} 
           cursos={cursos} 
           vendedores={vendedores} 
+          currentUser={currentUser}
           editData={editingLead}
           onClose={() => setEditingLead(null)}
         />
