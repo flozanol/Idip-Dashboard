@@ -1,6 +1,6 @@
 'use server'
 
-import { db } from './db';
+import { db, initDb } from './db';
 import { revalidatePath } from 'next/cache';
 import { getSession, hashPassword, verifyPassword, encrypt } from './auth';
 import { cookies } from 'next/headers';
@@ -388,6 +388,7 @@ export async function loginAction(formData: FormData) {
   const password = formData.get('password') as string;
 
   try {
+    await initDb();
     const result = await db.execute({
       sql: "SELECT * FROM usuarios WHERE email = ?",
       args: [email]
@@ -436,15 +437,16 @@ export async function setupAdmin(formData: FormData) {
   const password = formData.get('password') as string;
 
   try {
+    await initDb();
     const hashedPassword = await hashPassword(password);
     await db.execute({
       sql: "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, 'Director')",
       args: [nombre, email, hashedPassword]
     });
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Setup error:", error);
-    return { success: false, error: "Error creating admin" };
+    return { success: false, error: "Error creating admin: " + (error.message || "Unknown error") };
   }
 }
 
