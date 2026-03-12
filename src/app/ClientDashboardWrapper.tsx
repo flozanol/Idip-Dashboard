@@ -7,6 +7,7 @@ import { StatsCards } from "@/components/StatsCards";
 import { LeadForm } from "@/components/LeadForm";
 import { FunnelChart, ChannelMixChart } from "@/components/charts/DashboardCharts";
 import { MobileHeader } from "@/components/MobileHeader";
+import { Facebook, Instagram, Youtube, Music2, Star } from 'lucide-react';
 
 export default function ClientDashboardWrapper({ data }: { data: any }) {
   const { leads, sedes, categorias, cursos, vendedores, inversiones, marketingMetrics } = data;
@@ -79,20 +80,32 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                   <div className="space-y-4">
                     <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-[#afca0b] pl-2">CDMX (Polanco)</h5>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">FB Fans</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-blue-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Facebook size={12} className="text-[#1877F2]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">FB Fans</span>
+                        </div>
                         <span className="text-sm font-bold text-blue-500">{marketingMetrics?.fb_fans_polanco?.toLocaleString() || 0}</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">IG Followers</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-pink-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Instagram size={12} className="text-[#E4405F]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">IG Followers</span>
+                        </div>
                         <span className="text-sm font-bold text-pink-500">{marketingMetrics?.ig_followers_polanco?.toLocaleString() || 0}</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Rating</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-yellow-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Star size={12} className="text-[#F4B400]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">G-Rating</span>
+                        </div>
                         <span className="text-sm font-bold text-yellow-500">{marketingMetrics?.google_rating_polanco || 0}★</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Reviews</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-yellow-600/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Star size={12} className="text-[#F4B400]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">G-Reviews</span>
+                        </div>
                         <span className="text-sm font-bold text-yellow-600">{marketingMetrics?.google_reviews_polanco?.toLocaleString() || 0}</span>
                       </div>
                     </div>
@@ -102,20 +115,32 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                   <div className="space-y-4">
                     <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-[#afca0b] pl-2">Querétaro</h5>
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">FB Fans</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-blue-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Facebook size={12} className="text-[#1877F2]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">FB Fans</span>
+                        </div>
                         <span className="text-sm font-bold text-blue-500">{marketingMetrics?.fb_fans_qro?.toLocaleString() || 0}</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">IG Followers</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-pink-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Instagram size={12} className="text-[#E4405F]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">IG Followers</span>
+                        </div>
                         <span className="text-sm font-bold text-pink-500">{marketingMetrics?.ig_followers_qro?.toLocaleString() || 0}</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Rating</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-yellow-500/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Star size={12} className="text-[#F4B400]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">G-Rating</span>
+                        </div>
                         <span className="text-sm font-bold text-yellow-500">{marketingMetrics?.google_rating_qro || 0}★</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Reviews</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 group hover:border-yellow-600/30 transition-colors">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Star size={12} className="text-[#F4B400]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold block">G-Reviews</span>
+                        </div>
                         <span className="text-sm font-bold text-yellow-600">{marketingMetrics?.google_reviews_qro?.toLocaleString() || 0}</span>
                       </div>
                     </div>
@@ -125,12 +150,18 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                   <div className="space-y-4">
                     <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-zinc-700 pl-2">Global</h5>
                     <div className="grid grid-cols-1 gap-3">
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold">TikTok Followers</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between group hover:border-zinc-500/30 transition-colors">
+                        <div className="flex items-center gap-2">
+                          <Music2 size={12} className="text-white" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold">TikTok Followers</span>
+                        </div>
                         <span className="text-sm font-bold text-white">{marketingMetrics?.tt_followers?.toLocaleString() || 0}</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between">
-                        <span className="text-[9px] text-zinc-500 uppercase font-bold">Youtube Suscritos</span>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between group hover:border-red-500/30 transition-colors">
+                        <div className="flex items-center gap-2">
+                          <Youtube size={12} className="text-[#FF0000]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold">Youtube Suscritos</span>
+                        </div>
                         <span className="text-sm font-bold text-red-500">{marketingMetrics?.yt_subscribers?.toLocaleString() || 0}</span>
                       </div>
                     </div>

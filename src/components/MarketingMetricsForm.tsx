@@ -71,25 +71,25 @@ export function MarketingMetricsForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Facebook size={12} className="text-blue-500" /> FB Fans
+                <Facebook size={12} className="text-[#1877F2]" /> FB Fans
               </label>
               <input type="number" name="fb_fans_polanco" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Instagram size={12} className="text-pink-500" /> IG Followers
+                <Instagram size={12} className="text-[#E4405F]" /> IG Followers
               </label>
               <input type="number" name="ig_followers_polanco" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> Google Rating
+                <Star size={12} className="text-[#F4B400]" /> Google Rating
               </label>
               <input type="number" step="0.1" name="google_rating_polanco" placeholder="0.0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> Google Reseñas
+                <Star size={12} className="text-[#F4B400]" /> Google Reseñas
               </label>
               <input type="number" name="google_reviews_polanco" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
@@ -104,25 +104,25 @@ export function MarketingMetricsForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Facebook size={12} className="text-blue-500" /> FB Fans
+                <Facebook size={12} className="text-[#1877F2]" /> FB Fans
               </label>
               <input type="number" name="fb_fans_qro" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Instagram size={12} className="text-pink-500" /> IG Followers
+                <Instagram size={12} className="text-[#E4405F]" /> IG Followers
               </label>
               <input type="number" name="ig_followers_qro" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> Google Rating
+                <Star size={12} className="text-[#F4B400]" /> Google Rating
               </label>
               <input type="number" step="0.1" name="google_rating_qro" placeholder="0.0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Star size={12} className="text-yellow-500" /> Google Reseñas
+                <Star size={12} className="text-[#F4B400]" /> Google Reseñas
               </label>
               <input type="number" name="google_reviews_qro" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
@@ -137,13 +137,13 @@ export function MarketingMetricsForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Youtube size={12} className="text-red-500" /> Youtube Suscritos
+                <Youtube size={12} className="text-[#FF0000]" /> Youtube Suscritos
               </label>
               <input type="number" name="yt_subscribers" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
-                <Music2 size={12} /> Tiktok Followers
+                <Music2 size={12} className="text-white" /> Tiktok Followers
               </label>
               <input type="number" name="tt_followers" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
