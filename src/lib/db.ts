@@ -65,6 +65,7 @@ export async function initDb() {
         google_reviews_qro INTEGER DEFAULT 0,
         yt_subscribers INTEGER DEFAULT 0,
         tt_followers INTEGER DEFAULT 0,
+        pin_followers INTEGER DEFAULT 0,
         UNIQUE(mes, anio)
       );
     `);
@@ -96,6 +97,9 @@ export async function initDb() {
     } catch (e) {}
     try {
       await db.execute("ALTER TABLE leads ADD COLUMN vendedor_id INTEGER REFERENCES vendedores(id)");
+    } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE marketing_metrics ADD COLUMN pin_followers INTEGER DEFAULT 0");
     } catch (e) {}
 
     // Seed Sedes

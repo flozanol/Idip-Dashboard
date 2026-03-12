@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { updateMarketingMetrics } from '@/lib/actions';
-import { Save, Facebook, Instagram, Star, Youtube, Music2, Calendar, MapPin } from 'lucide-react';
+import { Save, Facebook, Instagram, Star, Youtube, Music2, Calendar, MapPin, Pin } from 'lucide-react';
 
 export function MarketingMetricsForm() {
   const [loading, setLoading] = useState(false);
@@ -146,6 +146,12 @@ export function MarketingMetricsForm() {
                 <Music2 size={12} className="text-white" /> Tiktok Followers
               </label>
               <input type="number" name="tt_followers" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] font-bold text-zinc-500 uppercase flex items-center gap-2">
+                <Pin size={12} className="text-[#E60023]" /> Pinterest Followers
+              </label>
+              <input type="number" name="pin_followers" placeholder="0" className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#afca0b]/50 transition-all font-medium" />
             </div>
           </div>
         </div>

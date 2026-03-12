@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { FilterBar } from '@/components/FilterBar';
 import { Plus, Trash2, GraduationCap, UserCheck, Settings as SettingsIcon } from 'lucide-react';
 import { addCourse, deleteCourse, addVendor, deleteVendor } from '@/lib/actions';
+import { MobileHeader } from '@/components/MobileHeader';
 
 export default function SettingsPage({ 
   cursos = [], 
@@ -15,6 +16,7 @@ export default function SettingsPage({
 }) {
   const [newCourse, setNewCourse] = useState('');
   const [newVendor, setNewVendor] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleAddCourse = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +33,18 @@ export default function SettingsPage({
   };
 
   return (
-    <div className="flex min-h-screen bg-black overflow-hidden text-white">
-      <Sidebar />
+    <div className="flex min-h-screen bg-black overflow-hidden text-white relative">
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
         <FilterBar />
         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
           <div className="max-w-4xl mx-auto space-y-12 pb-20">

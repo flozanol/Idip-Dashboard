@@ -7,7 +7,7 @@ import { StatsCards } from "@/components/StatsCards";
 import { LeadForm } from "@/components/LeadForm";
 import { FunnelChart, ChannelMixChart } from "@/components/charts/DashboardCharts";
 import { MobileHeader } from "@/components/MobileHeader";
-import { Facebook, Instagram, Youtube, Music2, Star } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Music2, Star, Pin, ExternalLink } from 'lucide-react';
 
 export default function ClientDashboardWrapper({ data }: { data: any }) {
   const { leads, sedes, categorias, cursos, vendedores, inversiones, marketingMetrics } = data;
@@ -30,6 +30,29 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
         <FilterBar />
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6 pb-12 text-white">
+            <div className="px-6 pt-6">
+              <a 
+                href="https://direccion-idip.vercel.app/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="premium-card group bg-gradient-to-r from-zinc-900 to-zinc-950 border-[#afca0b]/20 hover:border-[#afca0b]/50 transition-all flex items-center justify-between py-4"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-xl bg-[#afca0b]/10 text-[#afca0b] group-hover:scale-110 transition-transform">
+                    <ExternalLink size={20} />
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold tracking-tight">Acceso a Dirección Estratégica</h5>
+                    <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mt-0.5">Reportes y KPIs Avanzados</p>
+                  </div>
+                </div>
+                <div className="px-4">
+                   <div className="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center group-hover:bg-[#afca0b] group-hover:text-black transition-all">
+                      <ExternalLink size={14} />
+                   </div>
+                </div>
+              </a>
+            </div>
             <StatsCards leads={leads} inversiones={inversiones} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-6">
@@ -163,6 +186,13 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                           <span className="text-[9px] text-zinc-500 uppercase font-bold">Youtube Suscritos</span>
                         </div>
                         <span className="text-sm font-bold text-red-500">{marketingMetrics?.yt_subscribers?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between group hover:border-red-600/30 transition-colors">
+                        <div className="flex items-center gap-2">
+                          <Pin size={12} className="text-[#E60023]" />
+                          <span className="text-[9px] text-zinc-500 uppercase font-bold">Pinterest Followers</span>
+                        </div>
+                        <span className="text-sm font-bold text-[#E60023]">{marketingMetrics?.pin_followers?.toLocaleString() || 0}</span>
                       </div>
                     </div>
                   </div>

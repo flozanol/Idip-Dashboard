@@ -107,6 +107,7 @@ export async function updateMarketingMetrics(formData: FormData) {
   const google_reviews_qro = parseInt(formData.get('google_reviews_qro') as string) || 0;
   const yt_subscribers = parseInt(formData.get('yt_subscribers') as string) || 0;
   const tt_followers = parseInt(formData.get('tt_followers') as string) || 0;
+  const pin_followers = parseInt(formData.get('pin_followers') as string) || 0;
 
   try {
     await db.execute({
@@ -116,9 +117,9 @@ export async function updateMarketingMetrics(formData: FormData) {
               ig_followers_polanco, ig_followers_qro, 
               google_rating_polanco, google_rating_qro, 
               google_reviews_polanco, google_reviews_qro, 
-              yt_subscribers, tt_followers
+              yt_subscribers, tt_followers, pin_followers
             ) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
             ON CONFLICT(mes, anio) DO UPDATE SET 
             fb_fans_polanco = excluded.fb_fans_polanco,
             fb_fans_qro = excluded.fb_fans_qro,
@@ -129,14 +130,15 @@ export async function updateMarketingMetrics(formData: FormData) {
             google_reviews_polanco = excluded.google_reviews_polanco,
             google_reviews_qro = excluded.google_reviews_qro,
             yt_subscribers = excluded.yt_subscribers,
-            tt_followers = excluded.tt_followers`,
+            tt_followers = excluded.tt_followers,
+            pin_followers = excluded.pin_followers`,
       args: [
         mes, anio, 
         fb_fans_polanco, fb_fans_qro, 
         ig_followers_polanco, ig_followers_qro, 
         google_rating_polanco, google_rating_qro, 
         google_reviews_polanco, google_reviews_qro, 
-        yt_subscribers, tt_followers
+        yt_subscribers, tt_followers, pin_followers
       ]
     });
     revalidatePath('/');
@@ -239,6 +241,9 @@ export async function clearLeads() {
     await db.execute("DELETE FROM leads");
     revalidatePath('/');
     revalidatePath('/leads');
+    revalidatePath('/sedes');
+    revalidatePath('/performance');
+    revalidatePath('/investments');
     return { success: true };
   } catch (error) {
     console.error("Error clearing leads:", error);
