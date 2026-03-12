@@ -24,9 +24,6 @@ export default function LeadsPage({
   const [editingLead, setEditingLead] = useState<any>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  async function handleClear() {
-    await clearLeads();
-  }
 
   return (
     <div className="flex min-h-screen bg-black overflow-hidden text-white relative">
@@ -49,14 +46,6 @@ export default function LeadsPage({
                 <h2 className="text-2xl font-bold tracking-tight">Gestión de Leads</h2>
                 <div className="text-zinc-500 text-sm">{leads.length} leads registrados</div>
               </div>
-              {leads.length > 0 && (
-                <button 
-                  onClick={handleClear}
-                  className="text-xs text-rose-500/50 hover:text-rose-500 transition-colors border border-rose-500/20 hover:border-rose-500/50 px-3 py-1.5 rounded-lg font-medium"
-                >
-                  Borrar datos de prueba
-                </button>
-              )}
             </div>
 
             <div className="premium-card overflow-hidden !p-0">
