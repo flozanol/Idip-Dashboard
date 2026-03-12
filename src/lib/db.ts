@@ -51,6 +51,25 @@ export async function initDb() {
     `);
 
     await db.execute(`
+      CREATE TABLE IF NOT EXISTS marketing_metrics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mes INTEGER NOT NULL,
+        anio INTEGER NOT NULL,
+        fb_fans_polanco INTEGER DEFAULT 0,
+        fb_fans_qro INTEGER DEFAULT 0,
+        ig_followers_polanco INTEGER DEFAULT 0,
+        ig_followers_qro INTEGER DEFAULT 0,
+        google_rating_polanco REAL DEFAULT 0,
+        google_rating_qro REAL DEFAULT 0,
+        google_reviews_polanco INTEGER DEFAULT 0,
+        google_reviews_qro INTEGER DEFAULT 0,
+        yt_subscribers INTEGER DEFAULT 0,
+        tt_followers INTEGER DEFAULT 0,
+        UNIQUE(mes, anio)
+      );
+    `);
+
+    await db.execute(`
       CREATE TABLE IF NOT EXISTS leads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre_prospecto TEXT NOT NULL,

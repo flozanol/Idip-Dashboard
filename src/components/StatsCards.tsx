@@ -16,9 +16,9 @@ export function StatsCards({ leads, inversiones = [] }: { leads: any[], inversio
 
   const stats = [
     { label: 'Total Leads', value: totalLeads.toLocaleString(), icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { label: 'Conversión', value: `${conversionRate}%`, icon: TrendingUp, color: 'text-[#98C222]', bg: 'bg-[#98C222]/10' },
-    { label: 'Ticket Promedio', value: `$${Number(avgTicket).toLocaleString()}`, icon: DollarSign, color: 'text-rose-500', bg: 'bg-rose-500/10' },
-    { label: 'Rendimiento (ROI)', value: roi !== '--' ? `${roi}x` : '--', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+    { label: 'Inversión Total', value: `$${totalInversion.toLocaleString()}`, icon: DollarSign, color: 'text-rose-500', bg: 'bg-rose-500/10' },
+    { label: 'Costo por Lead', value: totalLeads > 0 ? `$${(totalInversion / totalLeads).toFixed(0)}` : '$0', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+    { label: 'Conversión', value: `${conversionRate}%`, icon: TrendingUp, color: 'text-[#afca0b]', bg: 'bg-[#afca0b]/10' },
   ];
 
   return (
@@ -35,7 +35,7 @@ export function StatsCards({ leads, inversiones = [] }: { leads: any[], inversio
             </div>
           </div>
           <div className="mt-4 flex items-center gap-2">
-            <span className={`text-xs font-medium text-[#98C222]`}>
+            <span className={`text-xs font-medium text-[#afca0b]`}>
               Tiempo real
             </span>
             <span className="text-zinc-600 text-xs">actualizado hoy</span>

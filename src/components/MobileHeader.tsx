@@ -13,7 +13,7 @@ export function MobileHeader({ onOpenMenu }: { onOpenMenu: () => void }) {
           alt="IDIP Logo" 
           className="h-8 w-auto"
         />
-        <div className="h-1 w-1 rounded-full bg-[#98C222]" />
+        <div className="h-1 w-1 rounded-full bg-[#afca0b]" />
         <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-tighter">Marketing Pulse</span>
       </div>
       <button 

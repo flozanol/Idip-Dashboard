@@ -77,6 +77,7 @@ export async function getDashboardData() {
     const cursos = await db.execute("SELECT * FROM cursos");
     const vendedores = await db.execute("SELECT * FROM vendedores");
     const inversiones = await db.execute("SELECT * FROM inversiones");
+    const marketingMetrics = await db.execute("SELECT * FROM marketing_metrics ORDER BY anio DESC, mes DESC LIMIT 1");
     
     return {
       leads: leads.rows,
@@ -85,10 +86,65 @@ export async function getDashboardData() {
       cursos: cursos.rows,
       vendedores: vendedores.rows,
       inversiones: inversiones.rows,
+      marketingMetrics: marketingMetrics.rows[0] || null,
     };
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
-    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [] };
+    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null };
+  }
+}
+
+export async function updateMarketingMetrics(formData: FormData) {
+  const mes = parseInt(formData.get('mes') as string);
+  const anio = parseInt(formData.get('anio') as string);
+  const fb_fans_polanco = parseInt(formData.get('fb_fans_polanco') as string) || 0;
+  const fb_fans_qro = parseInt(formData.get('fb_fans_qro') as string) || 0;
+  const ig_followers_polanco = parseInt(formData.get('ig_followers_polanco') as string) || 0;
+  const ig_followers_qro = parseInt(formData.get('ig_followers_qro') as string) || 0;
+  const google_rating_polanco = parseFloat(formData.get('google_rating_polanco') as string) || 0;
+  const google_rating_qro = parseFloat(formData.get('google_rating_qro') as string) || 0;
+  const google_reviews_polanco = parseInt(formData.get('google_reviews_polanco') as string) || 0;
+  const google_reviews_qro = parseInt(formData.get('google_reviews_qro') as string) || 0;
+  const yt_subscribers = parseInt(formData.get('yt_subscribers') as string) || 0;
+  const tt_followers = parseInt(formData.get('tt_followers') as string) || 0;
+
+  try {
+    await db.execute({
+      sql: `INSERT INTO marketing_metrics (
+              mes, anio, 
+              fb_fans_polanco, fb_fans_qro, 
+              ig_followers_polanco, ig_followers_qro, 
+              google_rating_polanco, google_rating_qro, 
+              google_reviews_polanco, google_reviews_qro, 
+              yt_subscribers, tt_followers
+            ) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+            ON CONFLICT(mes, anio) DO UPDATE SET 
+            fb_fans_polanco = excluded.fb_fans_polanco,
+            fb_fans_qro = excluded.fb_fans_qro,
+            ig_followers_polanco = excluded.ig_followers_polanco,
+            ig_followers_qro = excluded.ig_followers_qro,
+            google_rating_polanco = excluded.google_rating_polanco,
+            google_rating_qro = excluded.google_rating_qro,
+            google_reviews_polanco = excluded.google_reviews_polanco,
+            google_reviews_qro = excluded.google_reviews_qro,
+            yt_subscribers = excluded.yt_subscribers,
+            tt_followers = excluded.tt_followers`,
+      args: [
+        mes, anio, 
+        fb_fans_polanco, fb_fans_qro, 
+        ig_followers_polanco, ig_followers_qro, 
+        google_rating_polanco, google_rating_qro, 
+        google_reviews_polanco, google_reviews_qro, 
+        yt_subscribers, tt_followers
+      ]
+    });
+    revalidatePath('/');
+    revalidatePath('/marketing-metrics');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating marketing metrics:", error);
+    return { success: false };
   }
 }
 

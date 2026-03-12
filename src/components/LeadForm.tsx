@@ -76,22 +76,22 @@ export function LeadForm({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Nombre del Prospecto</label>
-                  <input required name="nombre" type="text" defaultValue={editData?.nombre_prospecto} placeholder="Ej. Ana García" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
+                  <input required name="nombre" type="text" defaultValue={editData?.nombre_prospecto} placeholder="Ej. Ana García" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#afca0b]/50 outline-none transition-colors" />
                 </div>
                 
                 <div className="col-span-1">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Teléfono</label>
-                  <input name="telefono" type="tel" defaultValue={editData?.telefono} placeholder="Ej. 5512345678" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
+                  <input name="telefono" type="tel" defaultValue={editData?.telefono} placeholder="Ej. 5512345678" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#afca0b]/50 outline-none transition-colors" />
                 </div>
 
                 <div className="col-span-1">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Email</label>
-                  <input name="email" type="email" defaultValue={editData?.email} placeholder="Ej. ana@ejemplo.com" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
+                  <input name="email" type="email" defaultValue={editData?.email} placeholder="Ej. ana@ejemplo.com" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#afca0b]/50 outline-none transition-colors" />
                 </div>
 
                 <div className="col-span-2">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Fecha de Registro</label>
-                  <input required name="fecha" type="date" defaultValue={editData?.fecha_registro ? new Date(editData.fecha_registro).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors [color-scheme:dark]" />
+                  <input required name="fecha" type="date" defaultValue={editData?.fecha_registro ? new Date(editData.fecha_registro).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#afca0b]/50 outline-none transition-colors [color-scheme:dark]" />
                 </div>
               </div>
 
@@ -146,7 +146,7 @@ export function LeadForm({
                 <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Monto de Venta (si aplica)</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">$</span>
-                  <input name="montoCierre" type="number" step="0.01" defaultValue={editData?.monto_cierre} placeholder="0.00" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-7 pr-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
+                  <input name="montoCierre" type="number" step="0.01" defaultValue={editData?.monto_cierre} placeholder="0.00" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-7 pr-3 py-2 text-sm focus:border-[#afca0b]/50 outline-none transition-colors" />
                 </div>
               </div>
 

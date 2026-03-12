@@ -9,7 +9,7 @@ import { FunnelChart, ChannelMixChart } from "@/components/charts/DashboardChart
 import { MobileHeader } from "@/components/MobileHeader";
 
 export default function ClientDashboardWrapper({ data }: { data: any }) {
-  const { leads, sedes, categorias, cursos, vendedores, inversiones } = data;
+  const { leads, sedes, categorias, cursos, vendedores, inversiones, marketingMetrics } = data;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -28,13 +28,13 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
         <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
         <FilterBar />
         <div className="flex-1 overflow-y-auto custom-scrollbar">
-          <div className="max-w-7xl mx-auto space-y-6 pb-12">
+          <div className="max-w-7xl mx-auto space-y-6 pb-12 text-white">
             <StatsCards leads={leads} inversiones={inversiones} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-6">
               <div className="lg:col-span-2 premium-card">
                 <h4 className="text-sm font-semibold text-zinc-400 mb-6 uppercase tracking-wider">Embudo de Conversión</h4>
-                <div className="h-[300px] w-full">
+                <div className="h-[320px] w-full">
                   <FunnelChart leads={leads} />
                 </div>
               </div>
@@ -47,9 +47,10 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 px-6">
+              {/* Desempeño por Sede */}
               <div className="premium-card min-h-[300px]">
                 <h4 className="text-sm font-semibold text-zinc-400 mb-6 uppercase tracking-wider">Desempeño por Sede</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 gap-4">
                   {sedes.map((sede: any) => {
                     const sedeLeads = leads.filter((l: any) => l.sede_id === sede.id);
                     const sedeVentas = sedeLeads.filter((l: any) => l.status === 'Venta').length;
@@ -59,15 +60,88 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                         <span className="font-medium text-sm">{String(sede.nombre)}</span>
                         <div className="flex items-center gap-4">
                           <span className="text-[10px] text-zinc-500 uppercase">Leads: <span className="text-white">{sedeLeads.length}</span></span>
-                          <span className="text-[10px] text-zinc-500 uppercase">Conv: <span className="text-[#98C222] font-bold">{conversion}%</span></span>
+                          <span className="text-[10px] text-zinc-500 uppercase">Conv: <span className="text-[#afca0b] font-bold">{conversion}%</span></span>
                         </div>
                       </div>
                     );
                   })}
                 </div>
               </div>
+
+              {/* Social Media Stats */}
+              <div className="premium-card lg:col-span-2">
+                <h4 className="text-sm font-semibold text-zinc-400 mb-6 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  Presencia en Redes
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* Polanco */}
+                  <div className="space-y-4">
+                    <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-[#afca0b] pl-2">CDMX (Polanco)</h5>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">FB Fans</span>
+                        <span className="text-sm font-bold text-blue-500">{marketingMetrics?.fb_fans_polanco?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">IG Followers</span>
+                        <span className="text-sm font-bold text-pink-500">{marketingMetrics?.ig_followers_polanco?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Rating</span>
+                        <span className="text-sm font-bold text-yellow-500">{marketingMetrics?.google_rating_polanco || 0}★</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Reviews</span>
+                        <span className="text-sm font-bold text-yellow-600">{marketingMetrics?.google_reviews_polanco?.toLocaleString() || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Querétaro */}
+                  <div className="space-y-4">
+                    <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-[#afca0b] pl-2">Querétaro</h5>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">FB Fans</span>
+                        <span className="text-sm font-bold text-blue-500">{marketingMetrics?.fb_fans_qro?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">IG Followers</span>
+                        <span className="text-sm font-bold text-pink-500">{marketingMetrics?.ig_followers_qro?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Rating</span>
+                        <span className="text-sm font-bold text-yellow-500">{marketingMetrics?.google_rating_qro || 0}★</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold block mb-1">G-Reviews</span>
+                        <span className="text-sm font-bold text-yellow-600">{marketingMetrics?.google_reviews_qro?.toLocaleString() || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Otros Canales */}
+                  <div className="space-y-4">
+                    <h5 className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest border-l-2 border-zinc-700 pl-2">Global</h5>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold">TikTok Followers</span>
+                        <span className="text-sm font-bold text-white">{marketingMetrics?.tt_followers?.toLocaleString() || 0}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 flex items-center justify-between">
+                        <span className="text-[9px] text-zinc-500 uppercase font-bold">Youtube Suscritos</span>
+                        <span className="text-sm font-bold text-red-500">{marketingMetrics?.yt_subscribers?.toLocaleString() || 0}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="px-6">
               <div className="premium-card relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-[#98C222]/5 blur-3xl -mr-16 -mt-16" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-[#afca0b]/5 blur-3xl -mr-16 -mt-16" />
                 <h4 className="text-sm font-semibold text-zinc-400 mb-6 uppercase tracking-wider flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
                   Alertas de Pérdida

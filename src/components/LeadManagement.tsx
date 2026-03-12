@@ -16,7 +16,7 @@ export function StatusSelector({ leadId, currentStatus }: { leadId: number, curr
       value={currentStatus}
       onChange={handleChange}
       className={`px-2.5 py-1 rounded-full text-[11px] font-bold border outline-none transition-all cursor-pointer ${
-        currentStatus === 'Venta' ? 'bg-[#98C222]/10 text-[#98C222] border-[#98C222]/20' :
+        currentStatus === 'Venta' ? 'bg-[#afca0b]/10 text-[#afca0b] border-[#afca0b]/20' :
         currentStatus === 'Perdido' ? 'bg-zinc-800 text-zinc-500 border-zinc-700' :
         'bg-zinc-800 text-zinc-300 border-zinc-700 hover:border-zinc-500'
       }`}
@@ -40,7 +40,7 @@ export function AttemptCounter({ leadId, attempts }: { leadId: number, attempts:
       <div className="flex flex-col border-l border-zinc-800 pl-1.5 ml-0.5">
         <button 
           onClick={() => handleUpdate(1)} 
-          className="text-zinc-600 hover:text-[#98C222] transition-colors"
+          className="text-zinc-600 hover:text-[#afca0b] transition-colors"
           title="Incrementar intentos"
         >
           <ChevronUp size={12} />

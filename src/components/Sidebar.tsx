@@ -27,6 +27,7 @@ const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', href: '/' },
   { icon: Users, label: 'Leads', href: '/leads' },
   { icon: BarChart3, label: 'Inversiones', href: '/investments' },
+  { icon: Users, label: 'Redes Sociales', href: '/marketing-metrics' },
   { icon: Settings, label: 'Configuración', href: '/settings' },
   { icon: MapPin, label: 'Sedes', href: '/sedes' },
   { icon: BookOpen, label: 'Manual', href: '/manual' },
@@ -59,7 +60,7 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
           />
         </Link>
         <div className="flex items-center gap-2">
-          <div className="h-1.5 w-1.5 rounded-full bg-[#98C222]" />
+          <div className="h-1.5 w-1.5 rounded-full bg-[#afca0b]" />
           <h1 className="font-bold tracking-tight text-xs uppercase text-zinc-500">Marketing Pulse</h1>
         </div>
       </div>
@@ -78,13 +79,13 @@ export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () =>
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 group",
                 isActive 
-                  ? "bg-[#98C222]/10 text-[#98C222] font-medium" 
+                  ? "bg-[#afca0b]/10 text-[#afca0b] font-medium" 
                   : "text-zinc-400 hover:text-white hover:bg-zinc-800"
               )}
             >
-              <item.icon size={18} className={cn(isActive ? "text-[#98C222]" : "text-zinc-400 group-hover:text-white")} />
+              <item.icon size={18} className={cn(isActive ? "text-[#afca0b]" : "text-zinc-400 group-hover:text-white")} />
               <span className="flex-1">{item.label}</span>
-              {isExternal && <div className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-[#98C222]" />}
+              {isExternal && <div className="w-1 h-1 rounded-full bg-zinc-700 group-hover:bg-[#afca0b]" />}
             </Link>
           );
         })}
