@@ -73,7 +73,7 @@ export function LeadForm({
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Nombre del Prospecto</label>
                   <input required name="nombre" type="text" defaultValue={editData?.nombre_prospecto} placeholder="Ej. Ana García" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm focus:border-[#98C222]/50 outline-none transition-colors" />
@@ -95,7 +95,7 @@ export function LeadForm({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Sede</label>
                   <select name="sedeId" defaultValue={editData?.sede_id} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm outline-none">
@@ -110,7 +110,7 @@ export function LeadForm({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-zinc-500 uppercase mb-1">Curso Específico</label>
                   <select name="cursoId" defaultValue={editData?.curso_id || ""} className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm outline-none">

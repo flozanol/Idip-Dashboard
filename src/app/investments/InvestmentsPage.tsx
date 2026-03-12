@@ -5,6 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { FilterBar } from '@/components/FilterBar';
 import { DollarSign, Save, TrendingUp, Calendar as CalendarIcon } from 'lucide-react';
 import { updateInvestment } from '@/lib/actions';
+import { MobileHeader } from '@/components/MobileHeader';
 
 const CANALES = ['Google', 'TikTok', 'Instagram', 'Facebook', 'YouTube', 'Alumnos', 'Exalumnos', 'Recomendados', 'Teléfono', 'Piso', 'WhatsApp'];
 const MESES = [
@@ -21,6 +22,7 @@ export default function InvestmentsPage({
   const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
   const [saving, setSaving] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Local state for edits
   const [localInversiones, setLocalInversiones] = useState<Record<string, number>>(
@@ -50,12 +52,21 @@ export default function InvestmentsPage({
   };
 
   return (
-    <div className="flex min-h-screen bg-black overflow-hidden text-white">
-      <Sidebar />
+    <div className="flex min-h-screen bg-black overflow-hidden text-white relative">
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
         <FilterBar />
-        <div className="flex-1 overflow-y-auto p-8 custom-scrollbar">
-          <div className="max-w-4xl mx-auto space-y-12 pb-20">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar">
+          <div className="max-w-4xl mx-auto space-y-8 md:space-y-12 pb-20">
             <header className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-bold uppercase tracking-widest">
                 <TrendingUp size={14} />

@@ -4,8 +4,9 @@ import { Sidebar } from "@/components/Sidebar";
 import { FilterBar } from "@/components/FilterBar";
 import { LeadForm } from "@/components/LeadForm";
 import { clearLeads } from "@/lib/actions";
-import { Users, Edit2 } from "lucide-react";
+import { Users, Edit2, X } from "lucide-react";
 import { StatusSelector, AttemptCounter } from "@/components/LeadManagement";
+import { MobileHeader } from "@/components/MobileHeader";
 import { useState } from "react";
 
 export default function LeadsPage({ 
@@ -21,17 +22,27 @@ export default function LeadsPage({
 }) {
   const { leads, sedes, categorias, cursos, vendedores } = data;
   const [editingLead, setEditingLead] = useState<any>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   async function handleClear() {
     await clearLeads();
   }
 
   return (
-    <div className="flex min-h-screen bg-black overflow-hidden text-white">
-      <Sidebar />
+    <div className="flex min-h-screen bg-black overflow-hidden text-white relative">
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
         <FilterBar />
-        <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="flex items-center justify-between">
               <div>

@@ -7,7 +7,7 @@ export function FilterBar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-between gap-4 p-4 bg-zinc-950/50 border-b border-zinc-800 sticky top-0 z-10 backdrop-blur-md">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-zinc-950/50 border-b border-zinc-800 sticky top-0 z-10 backdrop-blur-md">
       <div className="flex items-center gap-3">
         <select className="bg-zinc-900 border border-zinc-800 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#98C222]/50 transition-all text-white">
           <option>Todas las Sedes</option>

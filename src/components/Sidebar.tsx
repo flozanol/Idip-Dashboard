@@ -13,7 +13,8 @@ import {
   Settings,
   BookOpen,
   ExternalLink,
-  LogOut
+  LogOut,
+  X
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -32,12 +33,23 @@ const navItems = [
   { icon: ExternalLink, label: 'Dir. Estratégica', href: 'https://direccion-idip.vercel.app/', external: true },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }: { isOpen?: boolean, onClose?: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 border-r border-zinc-800 flex flex-col h-screen sticky top-0 bg-black/50 backdrop-blur-xl">
-      <div className="p-6 flex flex-col items-center gap-4">
+    <aside className={cn(
+      "fixed inset-y-0 left-0 z-50 w-64 border-r border-zinc-800 flex flex-col h-screen bg-black/95 backdrop-blur-xl transition-transform duration-300 lg:sticky lg:translate-x-0 lg:bg-black/50",
+      isOpen ? "translate-x-0" : "-translate-x-full"
+    )}>
+      <div className="p-6 flex flex-col items-center gap-4 relative">
+        {onClose && (
+          <button 
+            onClick={onClose}
+            className="lg:hidden absolute right-4 top-4 text-zinc-500 hover:text-white"
+          >
+            <X size={20} />
+          </button>
+        )}
         <Link href="/" className="transition-transform hover:scale-105 active:scale-95">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
