@@ -1,25 +1,38 @@
-import React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import { Sidebar } from "@/components/Sidebar";
 import { MobileHeader } from "@/components/MobileHeader";
 import { MarketingMetricsForm } from "@/components/MarketingMetricsForm";
-import { Globe } from 'lucide-react';
+import { Globe } from 'lucide-center';
+import { Globe as GlobeIcon } from 'lucide-react';
 
 export default function MarketingMetricsPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-black overflow-hidden relative">
-      <Sidebar isOpen={false} onClose={() => {}} />
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
       
-      <main className="flex-1 flex flex-col h-screen overflow-hidden">
-        <MobileHeader onOpenMenu={() => {}} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      
+      <main className="flex-1 flex flex-col h-screen overflow-hidden text-white">
+        <MobileHeader onOpenMenu={() => setIsSidebarOpen(true)} />
         
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto pb-12">
             <div className="premium-card relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-[#afca0b]/5 blur-3xl -mr-32 -mt-32" />
               
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 rounded-2xl bg-[#afca0b]/10 text-[#afca0b]">
-                  <Globe size={24} />
+                  <GlobeIcon size={24} />
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold tracking-tight">Métricas de Marketing</h1>
