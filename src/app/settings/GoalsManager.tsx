@@ -44,7 +44,7 @@ export default function GoalsManager({
       setSuccess(sedeId);
       setTimeout(() => setSuccess(null), 3000);
     } else {
-      alert("Error al guardar objetivos");
+      alert("Error al guardar objetivos: " + (result.error || "Error desconocido"));
     }
     setLoading(null);
   };

@@ -113,6 +113,11 @@ export async function initDb() {
       );
     `);
 
+    await db.execute(`
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_objetivos_periodo 
+      ON objetivos_mensuales(mes, anio, sede_id);
+    `);
+
     // Add columns if they don't exist (Migration)
     try {
       await db.execute("ALTER TABLE leads ADD COLUMN email TEXT");

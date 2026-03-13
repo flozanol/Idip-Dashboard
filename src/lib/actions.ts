@@ -316,9 +316,9 @@ export async function updateObjetivoMensual(sedeId: number, mes: number, anio: n
     revalidatePath('/');
     revalidatePath('/settings');
     return { success: true };
-  } catch (error) {
-    console.error("Error updating goal:", error);
-    return { success: false };
+  } catch (error: any) {
+    console.error("Error updating goal detail:", error);
+    return { success: false, error: error.message || "Unknown error" };
   }
 }
 
