@@ -485,3 +485,95 @@ export async function getAllUsers() {
     return [];
   }
 }
+
+export async function updateUserRole(userId: number, rol: string, sedeId: number | null) {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
+  try {
+    await db.execute({
+      sql: "UPDATE usuarios SET rol = ?, sede_id = ? WHERE id = ?",
+      args: [rol, sedeId, userId]
+    });
+    revalidatePath('/users');
+    return { success: true };
+  } catch (error) {
+    console.error("Update user role error:", error);
+    return { success: false, error: "Error updating user role" };
+  }
+}
+
+export async function changeUserPassword(formData: FormData) {
+  const session = await getSession();
+  if (!session) return { success: false, error: "Unauthorized" };
+
+  const currentPassword = formData.get('currentPassword') as string;
+  const newPassword = formData.get('newPassword') as string;
+  const userId = session.user.id;
+
+  try {
+    const result = await db.execute({
+      sql: "SELECT password FROM usuarios WHERE id = ?",
+      args: [userId]
+    });
+
+    if (result.rows.length === 0) return { success: false, error: "User not found" };
+
+    const user = result.rows[0] as any;
+    const isValid = await verifyPassword(currentPassword, user.password);
+
+    if (!isValid) {
+      return { success: false, error: "Contraseña actual incorrecta" };
+    }
+
+    const hashedNewPassword = await hashPassword(newPassword);
+    await db.execute({
+      sql: "UPDATE usuarios SET password = ? WHERE id = ?",
+      args: [hashedNewPassword, userId]
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Change password error:", error);
+    return { success: false, error: "Error changing password" };
+  }
+}
+
+export async function resetUserPasswordByAdmin(userId: number, newPassword: string) {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
+  try {
+    const hashedNewPassword = await hashPassword(newPassword);
+    await db.execute({
+      sql: "UPDATE usuarios SET password = ? WHERE id = ?",
+      args: [hashedNewPassword, userId]
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Reset password error:", error);
+    return { success: false, error: "Error resetting password" };
+  }
+}
+
+export async function deleteUser(userId: number) {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
+  try {
+    // Prevent deleting itself
+    if (session.user.id === userId) {
+      return { success: false, error: "No puedes eliminarte a ti mismo" };
+    }
+
+    await db.execute({
+      sql: "DELETE FROM usuarios WHERE id = ?",
+      args: [userId]
+    });
+    revalidatePath('/users');
+    return { success: true };
+  } catch (error) {
+    console.error("Delete user error:", error);
+    return { success: false, error: "Error deleting user" };
+  }
+}

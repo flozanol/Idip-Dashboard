@@ -3,9 +3,25 @@
 import React, { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { FilterBar } from '@/components/FilterBar';
-import { Plus, Trash2, GraduationCap, UserCheck, Settings as SettingsIcon } from 'lucide-react';
-import { addCourse, deleteCourse, addVendor, deleteVendor } from '@/lib/actions';
+import { addCourse, deleteCourse, addVendor, deleteVendor, changeUserPassword } from '@/lib/actions';
 import { MobileHeader } from '@/components/MobileHeader';
+import { 
+  Plus, 
+  Trash2, 
+  GraduationCap, 
+  UserCheck, 
+  Settings as SettingsIcon, 
+  ShieldCheck, 
+  Lock, 
+  Loader2, 
+  CheckCircle2 
+} from 'lucide-react';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export default function SettingsPage({ 
   cursos = [], 
@@ -19,6 +35,8 @@ export default function SettingsPage({
   const [newCourse, setNewCourse] = useState('');
   const [newVendor, setNewVendor] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [loadingPassword, setLoadingPassword] = useState(false);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
 
   const handleAddCourse = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,9 +52,40 @@ export default function SettingsPage({
     setNewVendor('');
   };
 
+  const handleChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoadingPassword(true);
+    setPasswordSuccess(false);
+    
+    const formData = new FormData(e.currentTarget);
+    const newPass = formData.get('newPassword') as string;
+    const confirmPass = formData.get('confirmPassword') as string;
+
+    if (newPass !== confirmPass) {
+      alert("Las contraseñas no coinciden");
+      setLoadingPassword(false);
+      return;
+    }
+
+    if (newPass.length < 6) {
+      alert("La nueva contraseña debe tener al menos 6 caracteres");
+      setLoadingPassword(false);
+      return;
+    }
+
+    const result = await changeUserPassword(formData);
+    if (result.success) {
+      setPasswordSuccess(true);
+      e.currentTarget.reset();
+      setTimeout(() => setPasswordSuccess(false), 3000);
+    } else {
+      alert(result.error);
+    }
+    setLoadingPassword(false);
+  };
+
   return (
     <div className="flex min-h-screen bg-black overflow-hidden text-white relative">
-      {/* Overlay for mobile sidebar */}
       {isSidebarOpen && (
         <div 
           className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
@@ -55,8 +104,8 @@ export default function SettingsPage({
                 <SettingsIcon size={14} />
                 Gestión
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight">Configuración del Sistema</h1>
-              <p className="text-zinc-500 text-lg">Administra los catálogos de cursos y vendedores para la captura de leads.</p>
+              <h1 className="text-4xl font-extrabold tracking-tight">Configuración</h1>
+              <p className="text-zinc-500 text-lg">Administra los catálogos del sistema y tu seguridad personal.</p>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -138,6 +187,51 @@ export default function SettingsPage({
                     <p className="text-center py-4 text-zinc-600 text-xs italic">No hay vendedores registrados</p>
                   )}
                 </div>
+              </div>
+
+              {/* Seguridad - Cambio de Contraseña */}
+              <div className="premium-card space-y-6 md:col-span-2">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-500">
+                    <ShieldCheck size={20} />
+                  </div>
+                  <h3 className="text-xl font-bold">Seguridad</h3>
+                </div>
+
+                <form onSubmit={handleChangePassword} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Contraseña Actual</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" size={16} />
+                      <input name="currentPassword" type="password" required className="w-full bg-black border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-rose-500/50" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Nueva Contraseña</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" size={16} />
+                      <input name="newPassword" type="password" required className="w-full bg-black border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-rose-500/50" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest ml-1">Confirmar Nueva Contraseña</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600" size={16} />
+                      <input name="confirmPassword" type="password" required className="w-full bg-black border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-rose-500/50" />
+                    </div>
+                  </div>
+                  <div className="md:col-span-3 flex justify-end">
+                    <button 
+                      disabled={loadingPassword}
+                      className={cn(
+                        "px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2",
+                        passwordSuccess ? "bg-green-500 text-white" : "bg-white text-black hover:bg-zinc-200"
+                      )}
+                    >
+                      {loadingPassword ? <Loader2 className="animate-spin" /> : passwordSuccess ? <><CheckCircle2 size={18} /> Actualizada</> : "Actualizar Contraseña"}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
