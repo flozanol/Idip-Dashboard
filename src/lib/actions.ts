@@ -106,6 +106,7 @@ export async function getDashboardData() {
   const { rol, id: usuarioId, sede_id: userSedeId } = session.user;
 
   try {
+    await initDb();
     let leadsQuery = `
       SELECT l.*, u.nombre as owner_nombre 
       FROM leads l
@@ -304,6 +305,7 @@ export async function updateObjetivoMensual(sedeId: number, mes: number, anio: n
   if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
 
   try {
+    await initDb();
     await db.execute({
       sql: `INSERT INTO objetivos_mensuales (sede_id, mes, anio, meta_leads, meta_ventas, presupuesto) 
             VALUES (?, ?, ?, ?, ?, ?) 
@@ -324,6 +326,7 @@ export async function updateObjetivoMensual(sedeId: number, mes: number, anio: n
 
 export async function getObjetivosByMonth(mes: number, anio: number) {
   try {
+    await initDb();
     const result = await db.execute({
       sql: "SELECT * FROM objetivos_mensuales WHERE mes = ? AND anio = ?",
       args: [mes, anio]
