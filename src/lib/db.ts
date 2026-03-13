@@ -100,6 +100,19 @@ export async function initDb() {
       );
     `);
 
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS objetivos_mensuales (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        mes INTEGER NOT NULL,
+        anio INTEGER NOT NULL,
+        sede_id INTEGER REFERENCES sedes(id),
+        meta_leads INTEGER DEFAULT 0,
+        meta_ventas REAL DEFAULT 0,
+        presupuesto REAL DEFAULT 0,
+        UNIQUE(mes, anio, sede_id)
+      );
+    `);
+
     // Add columns if they don't exist (Migration)
     try {
       await db.execute("ALTER TABLE leads ADD COLUMN email TEXT");
@@ -115,6 +128,9 @@ export async function initDb() {
     } catch (e) {}
     try {
       await db.execute("ALTER TABLE leads ADD COLUMN usuario_id INTEGER REFERENCES usuarios(id)");
+    } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE objetivos_mensuales ADD COLUMN meta_leads INTEGER DEFAULT 0");
     } catch (e) {}
 
     // Seed Sedes

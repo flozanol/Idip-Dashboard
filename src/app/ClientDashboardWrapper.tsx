@@ -7,10 +7,11 @@ import { StatsCards } from "@/components/StatsCards";
 import { LeadForm } from "@/components/LeadForm";
 import { FunnelChart, ChannelMixChart } from "@/components/charts/DashboardCharts";
 import { MobileHeader } from "@/components/MobileHeader";
-import { Facebook, Instagram, Youtube, Music2, Star, Pin, ExternalLink } from 'lucide-react';
+import { TrafficLights } from "@/components/TrafficLights";
+import { Facebook, Instagram, Youtube, Music2, Star, Pin, ExternalLink, FileText, Download } from 'lucide-react';
 
 export default function ClientDashboardWrapper({ data }: { data: any }) {
-  const { leads, sedes, categorias, cursos, vendedores, inversiones, marketingMetrics, currentUser } = data;
+  const { leads, sedes, categorias, cursos, vendedores, inversiones, marketingMetrics, objetivos, currentUser } = data;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -30,12 +31,12 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
         <FilterBar />
         <div className="flex-1 overflow-y-auto custom-scrollbar">
           <div className="max-w-7xl mx-auto space-y-6 pb-12 text-white">
-            <div className="px-6 pt-6">
+            <div className="px-6 pt-6 flex flex-col md:flex-row gap-4 items-stretch">
               <a 
                 href="https://direccion-idip.vercel.app/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="premium-card group bg-gradient-to-r from-zinc-900 to-zinc-950 border-[#afca0b]/20 hover:border-[#afca0b]/50 transition-all flex items-center justify-between py-4"
+                className="flex-1 premium-card group bg-gradient-to-r from-zinc-900 to-zinc-950 border-[#afca0b]/20 hover:border-[#afca0b]/50 transition-all flex items-center justify-between py-4"
               >
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 rounded-xl bg-[#afca0b]/10 text-[#afca0b] group-hover:scale-110 transition-transform">
@@ -52,7 +53,26 @@ export default function ClientDashboardWrapper({ data }: { data: any }) {
                    </div>
                 </div>
               </a>
+
+              <button 
+                onClick={() => window.location.href = '/report'}
+                className="premium-card group bg-zinc-900 hover:bg-white hover:text-black border-zinc-800 transition-all flex items-center gap-4 py-4 px-6"
+              >
+                <div className="p-2.5 rounded-xl bg-white/5 text-white group-hover:bg-black/5 group-hover:text-black transition-colors">
+                  <FileText size={20} />
+                </div>
+                <div className="text-left">
+                  <h5 className="text-sm font-bold tracking-tight uppercase">Reporte Mensual</h5>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <Download size={10} className="opacity-50" />
+                    <p className="text-[10px] font-bold tracking-widest uppercase opacity-50">Exportar PDF</p>
+                  </div>
+                </div>
+              </button>
             </div>
+
+            <TrafficLights leads={leads} objetivos={objetivos} />
+            
             <StatsCards leads={leads} inversiones={inversiones} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-6">

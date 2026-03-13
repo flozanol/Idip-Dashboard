@@ -130,6 +130,15 @@ export async function getDashboardData() {
     const inversiones = await db.execute("SELECT * FROM inversiones");
     const marketingMetrics = await db.execute("SELECT * FROM marketing_metrics ORDER BY anio DESC, mes DESC LIMIT 1");
     
+    // Fetch goals for the current month/year
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1;
+    const currentYear = now.getFullYear();
+    const objetivos = await db.execute({
+      sql: "SELECT * FROM objetivos_mensuales WHERE mes = ? AND anio = ?",
+      args: [currentMonth, currentYear]
+    });
+    
     return {
       leads: leads.rows,
       sedes: sedes.rows,
@@ -138,11 +147,12 @@ export async function getDashboardData() {
       vendedores: vendedores.rows,
       inversiones: inversiones.rows,
       marketingMetrics: marketingMetrics.rows[0] || null,
+      objetivos: objetivos.rows,
       currentUser: session.user
     };
   } catch (error) {
     console.error("Error fetching dashboard data:", error);
-    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null, currentUser: null };
+    return { leads: [], sedes: [], categorias: [], cursos: [], vendedores: [], inversiones: [], marketingMetrics: null, objetivos: [], currentUser: null };
   }
 }
 
@@ -285,6 +295,43 @@ export async function updateInvestment(canal: string, mes: number, anio: number,
   } catch (error) {
     console.error("Error updating investment:", error);
     return { success: false };
+  }
+}
+
+// Goals Management
+export async function updateObjetivoMensual(sedeId: number, mes: number, anio: number, metaLeads: number, metaVentas: number, presupuesto: number) {
+  const session = await getSession();
+  if (!session || session.user.rol !== 'Director') return { success: false, error: "Unauthorized" };
+
+  try {
+    await db.execute({
+      sql: `INSERT INTO objetivos_mensuales (sede_id, mes, anio, meta_leads, meta_ventas, presupuesto) 
+            VALUES (?, ?, ?, ?, ?, ?) 
+            ON CONFLICT(sede_id, mes, anio) DO UPDATE SET 
+            meta_leads = excluded.meta_leads,
+            meta_ventas = excluded.meta_ventas,
+            presupuesto = excluded.presupuesto`,
+      args: [sedeId, mes, anio, metaLeads, metaVentas, presupuesto]
+    });
+    revalidatePath('/');
+    revalidatePath('/settings');
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating goal:", error);
+    return { success: false };
+  }
+}
+
+export async function getObjetivosByMonth(mes: number, anio: number) {
+  try {
+    const result = await db.execute({
+      sql: "SELECT * FROM objetivos_mensuales WHERE mes = ? AND anio = ?",
+      args: [mes, anio]
+    });
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching goals:", error);
+    return [];
   }
 }
 

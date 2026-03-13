@@ -10,7 +10,8 @@ import {
   Lightbulb,
   Zap,
   CheckCircle2,
-  Settings
+  Settings,
+  PieChart
 } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { FilterBar } from '@/components/FilterBar';
@@ -21,51 +22,75 @@ export default function ManualPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const sections = [
     {
-      title: "1. Captura de Leads",
-      icon: Target,
+      title: "1. Roles y Seguridad (RBAC)",
+      icon: Settings,
       color: "text-[#98C222]",
       bg: "bg-[#98C222]/10",
-      content: "La captura es la base de todo. Usa el botón '+' flotante para registrar prospectos, especificando el curso, vendedor y monto de venta.",
+      content: "IDIP Dashboard utiliza Control de Acceso Basado en Roles. Los Directores gestionan usuarios, los Gerentes supervisan su sede y los Vendedores administran sus propios leads.",
       tips: [
-        "Ingresa el monto de la venta para que el Ticket Promedio sea real.",
-        "Asigna un vendedor para llevar el control de comisiones o desempeño.",
-        "Selecciona el curso específico para el que aplica el lead."
+        "El Director puede crear usuarios y resetear contraseñas.",
+        "Cambia tu contraseña periódicamente desde Configuración.",
+        "Los Gerentes solo ven datos de su sede asignada."
       ]
     },
     {
-      title: "2. Rendimiento (ROI)",
-      icon: Zap,
-      color: "text-amber-500",
-      bg: "bg-amber-500/10",
-      content: "Conoce el retorno de inversión real. El sistema cruza tus ventas logradas con lo que invertiste en publicidad.",
-      tips: [
-        "Actualiza tus inversiones mensuales en la sección correspondiente.",
-        "Un ROI mayor a 1 indica que estás recuperando lo invertido.",
-        "Compara el rendimiento entre canales para optimizar tu gasto."
-      ]
-    },
-    {
-      title: "3. Inversiones por Canal",
-      icon: TrendingUp,
+      title: "2. Gestión de Leads y Embudo",
+      icon: Target,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
-      content: "Registra cuánto inviertes al mes en Google, Facebook, etc. para obtener métricas de rentabilidad precisas.",
+      content: "El corazón del sistema. Registra prospectos, edita su estatus ('Nuevo', 'Contactado', 'Cierre', 'Venta') y monitorea los intentos de contacto.",
       tips: [
-        "Hazlo una vez al mes o actualiza si aumentó el presupuesto.",
-        "Elige el mes y año correctamente antes de guardar.",
-        "Usa el botón de guardado individual por canal."
+        "Leads con +4 intentos sin venta aparecen como Alertas de Pérdida.",
+        "Ingresa el 'Monto de Cierre' solo cuando el estatus sea 'Venta'.",
+        "Usa el botón de edición para actualizar información del prospecto."
       ]
     },
     {
-      title: "4. Catálogos y Filtros",
-      icon: Settings,
+      title: "3. Metas Históricas y Planeación",
+      icon: TrendingUp,
+      color: "text-amber-500",
+      bg: "bg-amber-500/10",
+      content: "Solo Directores: Define metas mensuales de leads, ventas y presupuesto por sede para habilitar indicadores de rendimiento.",
+      tips: [
+        "Configura las metas al inicio de cada mes.",
+        "Si falta una meta, verás un banner preventivo en el Dashboard.",
+        "El sistema guarda el histórico para comparativas anuales."
+      ]
+    },
+    {
+      title: "4. Dashboards Senior BI",
+      icon: Zap,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
-      content: "Mantén tus catálogos de Cursos y Vendedores actualizados desde la sección de Configuración.",
+      content: "Indicadores tipo 'semáforo' con efecto glow: Velocidad de Venta (Ventas vs Meta), Salud del Embudo (% Conversión) y Eficiencia de Gasto (ROI).",
       tips: [
-        "Da de alta cursos nuevos antes de empezar su campaña.",
-        "Borra vendedores que ya no estén activos para limpiar el formulario.",
-        "Usa los filtros del Dashboard para segmentar por periodos."
+        "Verde (>90%): Operación saludable.",
+        "Amarillo (70-89%): Atención requerida.",
+        "Rojo (<70%): Acción correctiva inmediata."
+      ]
+    },
+    {
+      title: "5. Radiografía IDIP (Reportes)",
+      icon: BookOpen,
+      color: "text-rose-500",
+      bg: "bg-rose-500/10",
+      content: "Genera reportes ejecutivos en PDF ('Radiografía IDIP') con veredicto directivo, gráficas de Planeado vs Real y detección de fugas de dinero.",
+      tips: [
+        "Usa el botón 'Reporte Mensual' en el Dashboard.",
+        "Detecta leads 'stale' (>48h sin atención) automáticamente.",
+        "Visualiza el 'Mix de Producto' por monto de venta."
+      ]
+    },
+    {
+      title: "6. Métricas de Marketing",
+      icon: PieChart,
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
+      content: "Monitorea el crecimiento de redes sociales (FB, IG, YT, TT, Pinterest) y ratings de Google por sede y mes.",
+      tips: [
+        "Actualiza métricas mensualmente para ver la tendencia de crecimiento.",
+        "Compara el G-Rating entre Polanco y Querétaro.",
+        "Cruza el crecimiento de fans con el volumen de leads por canal."
       ]
     }
   ];
@@ -89,29 +114,29 @@ export default function ManualPage() {
             <header className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#98C222]/10 border border-[#98C222]/20 text-[#98C222] text-xs font-bold uppercase tracking-widest">
                 <BookOpen size={14} />
-                Guía de Usuario
+                Manual Senior BI
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight">Cómo explotar IDIP Marketing Pulse al máximo</h1>
-              <p className="text-zinc-500 text-lg">Esta guía te ayudará a convertir datos en decisiones estratégicas para la escuela.</p>
+              <h1 className="text-4xl font-extrabold tracking-tight">Ecosistema IDIP Marketing Pulse</h1>
+              <p className="text-zinc-500 text-lg">Guía técnica y operativa para la toma de decisiones basada en datos.</p>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sections.map((section) => (
-                <div key={section.title} className="premium-card space-y-6">
+                <div key={section.title} className="premium-card space-y-4 flex flex-col">
                   <div className="flex items-center gap-4">
-                    <div className={`p-3 rounded-2xl ${section.bg} ${section.color}`}>
-                      <section.icon size={24} />
+                    <div className={`p-2.5 rounded-xl ${section.bg} ${section.color}`}>
+                      <section.icon size={20} />
                     </div>
-                    <h3 className="text-xl font-bold">{section.title}</h3>
+                    <h3 className="text-sm font-bold">{section.title}</h3>
                   </div>
-                  <p className="text-zinc-400 leading-relaxed text-sm">
+                  <p className="text-zinc-500 leading-relaxed text-[11px] flex-1">
                     {section.content}
                   </p>
-                  <div className="space-y-3">
-                    {section.tips.map((tip, i) => (
-                      <div key={i} className="flex gap-3 bg-zinc-950/50 p-3 rounded-xl border border-zinc-800/50">
-                        <CheckCircle2 size={16} className="text-[#98C222] shrink-0 mt-0.5" />
-                        <span className="text-xs text-zinc-500 italic">{tip}</span>
+                  <div className="space-y-2 pt-2 border-t border-zinc-800/50">
+                    {section.tips.slice(0, 3).map((tip, i) => (
+                      <div key={i} className="flex gap-2">
+                        <CheckCircle2 size={12} className="text-[#98C222] shrink-0 mt-0.5" />
+                        <span className="text-[10px] text-zinc-400 italic leading-tight">{tip}</span>
                       </div>
                     ))}
                   </div>
@@ -119,22 +144,17 @@ export default function ManualPage() {
               ))}
             </div>
 
-            <div className="premium-card bg-gradient-to-br from-[#98C222]/20 to-transparent border-[#98C222]/20">
-              <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="premium-card bg-zinc-900 border-zinc-800 overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#98C222]/5 blur-3xl -mr-16 -mt-16" />
+              <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
                 <div className="space-y-4 flex-1">
                   <div className="flex items-center gap-2 text-[#98C222]">
                     <Lightbulb size={24} />
-                    <h3 className="text-xl font-bold">Pro Tip: Los Canales</h3>
+                    <h3 className="text-xl font-bold">Lógica de Insights (IA)</h3>
                   </div>
-                  <p className="text-zinc-300 text-sm leading-relaxed">
-                    Si notas que el canal <strong>'TikTok'</strong> tiene muchos leads pero 0 ventas, podrías estar atrayendo a la audiencia equivocada. Compara esto con <strong>'Recomendados'</strong>, que suele tener una conversión mucho más alta. Ajusta tu presupuesto basándote en el <strong>Mix de Canales</strong>.
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    El sistema no solo muestra datos, los interpreta. Si un canal tiene un <strong>ROI</strong> bajo o hay <strong>fugas de dinero</strong> (leads ignorados), el reporte lo señalará automáticamente en la sección de veredicto. Usa esta información para reasignar presupuesto de campañas ineficientes hacia las de mayor conversión.
                   </p>
-                </div>
-                <div className="w-full md:w-64 h-40 bg-zinc-900 rounded-2xl border border-zinc-800 flex items-center justify-center relative overflow-hidden group">
-                   <Zap size={48} className="text-[#98C222] animate-pulse" />
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
-                      <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Enfoque Estratégico</span>
-                   </div>
                 </div>
               </div>
             </div>
