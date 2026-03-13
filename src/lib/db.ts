@@ -137,6 +137,12 @@ export async function initDb() {
     try {
       await db.execute("ALTER TABLE objetivos_mensuales ADD COLUMN meta_leads INTEGER DEFAULT 0");
     } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE objetivos_mensuales ADD COLUMN meta_ventas REAL DEFAULT 0");
+    } catch (e) {}
+    try {
+      await db.execute("ALTER TABLE objetivos_mensuales ADD COLUMN presupuesto REAL DEFAULT 0");
+    } catch (e) {}
 
     // Seed Sedes
     const sedes = ['Polanco', 'Querétaro', 'Online', 'On-Demand'];
