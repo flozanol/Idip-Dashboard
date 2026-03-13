@@ -307,7 +307,7 @@ export async function updateObjetivoMensual(sedeId: number, mes: number, anio: n
     await db.execute({
       sql: `INSERT INTO objetivos_mensuales (sede_id, mes, anio, meta_leads, meta_ventas, presupuesto) 
             VALUES (?, ?, ?, ?, ?, ?) 
-            ON CONFLICT(sede_id, mes, anio) DO UPDATE SET 
+            ON CONFLICT(mes, anio, sede_id) DO UPDATE SET 
             meta_leads = excluded.meta_leads,
             meta_ventas = excluded.meta_ventas,
             presupuesto = excluded.presupuesto`,
